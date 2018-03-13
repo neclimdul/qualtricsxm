@@ -1,0 +1,205 @@
+<?php
+
+define('QUALTRICS_BASE_URL', 'https://survey.qualtrics.com/API/v3/');
+define('QUALTRICS_EMBED_URL', ' ');
+
+define('QUALTRICS_USERNAME', '');
+define('QUALTRICS_PASSWORD', '');
+define('API_TOKEN', '');
+
+/**
+ * Implementation of hook_menu().
+ *
+ * @return array
+ *  Menu items.
+ */
+function qualtricsxm_menu() {
+
+  $items['qualtricsxm/survey/%'] = array(
+    'page callback' => 'qualtricsxm_survey_page',
+    'page arguments' => array(2),
+    'access arguments' => array('access qualtricsxm survey'),
+  );
+//  $items['qualtricsxm/count/%'] = array(
+//    'page callback' => 'qualtricsxm_count_survey_submissions',
+//    'page arguments' => array(2),
+//    'access arguments' => array('access qualtrics survey'),
+//  );
+//
+//  $items['qualtricsxm/getsurveys'] = array(
+//    'page callback' => 'qualtricsxm_get_surveys',
+//    'access arguments' => array('access qualtrics survey'),
+//  );
+  $items['admin/config/qualtricsxm'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('qualtricsxm_config_settings'),
+    'access arguments' => array('administer qualtricsxm settings'),
+    'title' => 'QualtricsXM settings',
+    'description' => 'Settings for the third-party survey embedding from Qualtrics.',
+    'file' => 'qualtricsxm.admin.inc'
+  );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_permission().
+ * @return array
+ */
+function qualtricsxm_permission() {
+  return array(
+    'access qualtricsxm survey' => array(
+      'title' => t('Access a Qualtrics survey'),
+      'description' => t('Allow users to access a qualtrics survey.'),
+    ),
+    'administer qualtricsxm settings' => array(
+      'title' => t('Administer Qualtrics Settings'),
+      'description' => t('Allow a user, usually an admin, to configure the settings for the Qualtrics module.'),
+    ),
+  );
+}
+
+/**
+ * Page callback for loading a survey page.
+ *
+ * @param $survey_id
+ *  ID of the survey to be loaded.
+ * @return string
+ *  The page content.
+ */
+function qualtricsxm_survey_page($survey_id) {
+  $survey_data = qualtricsxm_get_survey_info($survey_id);
+
+  if (!$survey_data) {
+    return t('Survey is unavailable.');
+  }
+  global $user;
+
+  drupal_set_title($survey_data->result->name);
+  return theme('qualtricsxm_embed_survey', array(
+    'survey' => array(
+      // HACK: Passing UID to username.
+      'survey_id' => $survey_id, 'username' => $user->uid, 'uid' => $user->uid
+    ), 'width' => 800, 'height' => 600
+  ));
+}
+
+
+function _qualtricsxm_api_http_request($url_params = array()) {
+  //API call.
+  if (empty($url_params)) {
+    return FALSE;
+  }
+
+  $api_token = variable_get('qualtricsxm_api_token');
+  $options = array(
+    'method' => 'GET',
+    'timeout' => 15,
+    'headers' => array('X-API-TOKEN' => $api_token),
+  );
+
+  $api_req = "/" ;
+  foreach ($url_params as $url => $val) {
+    $api_req .= urlencode($url) . "/". urlencode($val);
+  }
+
+  $api_token = variable_get('qualtricsxm_api_token', NULL);
+
+  $url = variable_get('qualtricsxm_base_url') . $api_req;
+
+  $request = drupal_http_request($url, $options);
+  return $request;
+}
+
+
+ function qualtricsxm_count_survey_submissions($survey_id) {
+    // Invoke getResponseData API.
+    $request_data = qualtricsxm_get_survey_info($survey_id);
+
+    $response_counts =  $request_data->result->responseCounts;
+    print_r($response_counts);
+    exit;
+  }
+
+
+/**
+ * Retrieving the list of surveys from Qualtrics.
+ *
+ * @return array
+ *  List of surveys in array format.
+ */
+function qualtricsxm_get_surveys() {
+  $survey = _qualtricsxm_api_http_request(array('surveys'=>''));
+  if ($survey->code != 200) {
+    drupal_set_message("Survey is not available", "warning");
+    return FALSE;
+  }
+
+  $survey_data = json_decode($survey->data);
+
+  foreach ($survey_data->result->elements as $element) {
+    $surveys_array[$element->id]['surveyname'] = $element->name;
+  }
+  return $surveys_array;
+  }
+
+
+/**
+ * Implementation of getSurvey Qualtrics API.
+ *
+ * @param $survey_id
+ *  The ID of the Survey to retrieve information for.
+ * @return array
+ *  Survey info in array format.
+ */
+function qualtricsxm_get_survey_info($survey_id) {
+  $survey = _qualtricsxm_api_http_request(array('surveys'=>$survey_id));
+
+  if ($survey->code != 200) {
+    drupal_set_message("Survey is not available", "warning");
+    return FALSE;
+  }
+
+  $survey_data = json_decode($survey->data);
+  return $survey_data;
+}
+
+
+/**
+ * Implementation of hook_theme().
+ *
+ * @param $existing
+ * @param $type
+ * @param $theme
+ * @param $path
+ * @return array
+ */
+function qualtricsxm_theme($existing, $type, $theme, $path) {
+  return array(
+    'qualtricsxm_embed_survey' => array(
+      'variables' => array('survey' => NULL, 'width' => NULL, 'height' => NULL),
+    ),
+  );
+}
+
+/**
+ * Theme function to create the HTML code required to embed a Qualtrics survey.
+ *
+ * @param $vars
+ *  Theme function vars.
+ * @return string
+ *  The rendered HTML.
+ */
+function theme_qualtricsxm_embed_survey($vars) {
+
+  $survey_params = $vars['survey'];
+
+  $width = isset($vars['width']) ? 'width="' . $vars['width'] . '"' : NULL;
+  $height = isset($vars['height']) ? 'height="' . $vars['height'] . '"' : NULL;
+  //TODO iframe auto-fit in window js.
+  $iframe_url = url(variable_get('qualtricsxm_embed_url', QUALTRICS_EMBED_URL)) . "/" .$survey_params['survey_id'];
+  $iframe = <<<IFRAME
+<iframe src="$iframe_url" $height $width></iframe>
+IFRAME;
+  return $iframe;
+}
