@@ -3,8 +3,6 @@
 define('QUALTRICS_BASE_URL', 'https://survey.qualtrics.com/API/v3/');
 define('QUALTRICS_EMBED_URL', ' ');
 
-define('QUALTRICS_USERNAME', '');
-define('QUALTRICS_PASSWORD', '');
 define('API_TOKEN', '');
 
 /**
@@ -20,16 +18,7 @@ function qualtricsxm_menu() {
     'page arguments' => array(2),
     'access arguments' => array('access qualtricsxm survey'),
   );
-//  $items['qualtricsxm/count/%'] = array(
-//    'page callback' => 'qualtricsxm_count_survey_submissions',
-//    'page arguments' => array(2),
-//    'access arguments' => array('access qualtrics survey'),
-//  );
-//
-//  $items['qualtricsxm/getsurveys'] = array(
-//    'page callback' => 'qualtricsxm_get_surveys',
-//    'access arguments' => array('access qualtrics survey'),
-//  );
+
   $items['admin/config/qualtricsxm'] = array(
     'page callback' => 'drupal_get_form',
     'page arguments' => array('qualtricsxm_config_settings'),
@@ -103,8 +92,6 @@ function _qualtricsxm_api_http_request($url_params = array()) {
     $api_req .= urlencode($url) . "/". urlencode($val);
   }
 
-  $api_token = variable_get('qualtricsxm_api_token', NULL);
-
   $url = variable_get('qualtricsxm_base_url') . $api_req;
 
   $request = drupal_http_request($url, $options);
@@ -112,14 +99,15 @@ function _qualtricsxm_api_http_request($url_params = array()) {
 }
 
 
- function qualtricsxm_count_survey_submissions($survey_id) {
-    // Invoke getResponseData API.
-    $request_data = qualtricsxm_get_survey_info($survey_id);
+function qualtricsxm_count_survey_submissions($survey_id) {
+  // Invoke getResponseData API.
+  $request_data = qualtricsxm_get_survey_info($survey_id);
 
-    $response_counts =  $request_data->result->responseCounts;
-    print_r($response_counts);
-    exit;
-  }
+  $response_counts =  $request_data->result->responseCounts;
+  //print_r($response_counts);
+  //exit;
+  return $response_counts;
+ }
 
 
 /**

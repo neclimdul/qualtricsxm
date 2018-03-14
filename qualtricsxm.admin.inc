@@ -23,20 +23,6 @@ function qualtricsxm_config_settings() {
     '#description' => t('Your API token.'),
   );
 
-  $form['api']['qualtricsxm_username'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Username'),
-    '#default_value' => variable_get('qualtricsxm_username', QUALTRICS_USERNAME),
-    '#description' => t('The username for the API authentication.'),
-  );
-
-  $form['api']['qualtricsxm_password'] = array(
-    '#type' => 'password',
-    '#title' => t('Password'),
-    '#default_value' => variable_get('qualtricsxm_password', QUALTRICS_PASSWORD),
-    '#description' => t('The password for the API authentication.'),
-  );
-
   $form['embedding'] = array(
     '#type' => 'fieldset',
     '#title' => t('Embedding options'),
