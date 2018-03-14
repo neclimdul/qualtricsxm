@@ -5,6 +5,7 @@ core = 7.x
 configure = admin/config/qualtricsxm
 files[] = qualtricsxm.admin.inc
 files[] = qualtricsxm.module
+api = 3
 
 ; Information added by drupal.org packaging script on 2013-10-01
 version = "7.x-1.x-dev"
