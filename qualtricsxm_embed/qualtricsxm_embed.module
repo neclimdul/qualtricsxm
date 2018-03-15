@@ -125,7 +125,6 @@ function qualtricsxm_embed_field_settings_form($field, $instance, $has_data) {
     '#type' => 'textfield',
     '#title' => t('Survey iframe width'),
     '#default_value' => isset($settings['qualtricsxm_embed_width']) ? $settings['qualtricsxm_embed_width'] : NULL,
-    '#required' => TRUE,
     '#element_validate' => array('element_validate_integer_positive'),
     '#description' => t('The width for the iframe.'),
   );
@@ -133,7 +132,6 @@ function qualtricsxm_embed_field_settings_form($field, $instance, $has_data) {
     '#type' => 'textfield',
     '#title' => t('Survey iframe height'),
     '#default_value' => isset($settings['qualtricsxm_embed_height']) ? $settings['qualtricsxm_embed_height'] : NULL,
-    '#required' => TRUE,
     '#element_validate' => array('element_validate_integer_positive'),
     '#description' => t('The height for the iframe.'),
   );
