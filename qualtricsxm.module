@@ -69,7 +69,7 @@ function qualtricsxm_survey_page($survey_id) {
     'survey' => array(
       // HACK: Passing UID to username.
       'survey_id' => $survey_id, 'username' => $user->uid, 'uid' => $user->uid
-    ), 'width' => 800, 'height' => 600
+    ), 'width' => "100%", 'height' => "100%"
   ));
 }
 
@@ -182,12 +182,16 @@ function theme_qualtricsxm_embed_survey($vars) {
 
   $survey_params = $vars['survey'];
 
-  $width = isset($vars['width']) ? 'width="' . $vars['width'] . '"' : NULL;
-  $height = isset($vars['height']) ? 'height="' . $vars['height'] . '"' : NULL;
+  $width = !empty($vars['width']) ? 'width="' . $vars['width'] . '"' : NULL;
+  $height = !empty($vars['height']) ? 'height="' . $vars['height'] . '"' : NULL;
+
+  if (empty($height)) {
+    drupal_add_js(drupal_get_path("module", "qualtricsxm")."/js/iframe_resize.js");
+  }
   //TODO iframe auto-fit in window js.
   $iframe_url = url(variable_get('qualtricsxm_embed_url', QUALTRICS_EMBED_URL)) . "/" .$survey_params['survey_id'];
   $iframe = <<<IFRAME
-<iframe src="$iframe_url" $height $width></iframe>
+<iframe src="$iframe_url" $height $width frameborder="0" scrolling="no" class="qualtrics_iframe"></iframe>
 IFRAME;
   return $iframe;
 }
