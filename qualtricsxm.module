@@ -5,7 +5,6 @@
  * Main module.
  */
 
-
 define('QUALTRICS_BASE_URL', 'https://survey.qualtrics.com/API/v3/');
 define('QUALTRICS_EMBED_URL', ' ');
 
@@ -13,9 +12,6 @@ define('API_TOKEN', '');
 
 /**
  * Implementation of hook_menu().
- *
- * @return array
- *  Menu items.
  */
 function qualtricsxm_menu() {
 
@@ -39,7 +35,6 @@ function qualtricsxm_menu() {
 
 /**
  * Implementation of hook_permission().
- * @return array
  */
 function qualtricsxm_permission() {
   return array(
@@ -80,6 +75,11 @@ function qualtricsxm_survey_page($survey_id) {
 }
 
 
+/**
+ * API call by HTTP_request.
+ * @param array $url_params
+ * @return bool|object
+ */
 function _qualtricsxm_api_http_request($url_params = array()) {
   //API call.
   if (empty($url_params)) {
@@ -104,7 +104,11 @@ function _qualtricsxm_api_http_request($url_params = array()) {
   return $request;
 }
 
-
+  /**
+   * Help function to get the survey responseCounts.
+   * @param $survey_id
+   * @return mixed
+   */
 function qualtricsxm_count_survey_submissions($survey_id) {
   // Invoke getResponseData API.
   $request_data = qualtricsxm_get_survey_info($survey_id);
