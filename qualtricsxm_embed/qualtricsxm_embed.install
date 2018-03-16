@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ *
+ * Qualtrics field schema.
+ */
 
 /**
  * Implements hook_field_schema().

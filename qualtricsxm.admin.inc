@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ *
+ * Qualtrics admin conf form.
+ */
 
 function qualtricsxm_config_settings() {
 

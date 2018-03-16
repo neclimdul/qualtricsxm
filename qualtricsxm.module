@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file
+ *
+ * Main module.
+ */
+
 
 define('QUALTRICS_BASE_URL', 'https://survey.qualtrics.com/API/v3/');
 define('QUALTRICS_EMBED_URL', ' ');
@@ -89,7 +95,7 @@ function _qualtricsxm_api_http_request($url_params = array()) {
 
   $api_req = "/" ;
   foreach ($url_params as $url => $val) {
-    $api_req .= urlencode($url) . "/". urlencode($val);
+    $api_req .= urlencode($url) . "/" . urlencode($val);
   }
 
   $url = variable_get('qualtricsxm_base_url') . $api_req;
@@ -104,8 +110,7 @@ function qualtricsxm_count_survey_submissions($survey_id) {
   $request_data = qualtricsxm_get_survey_info($survey_id);
 
   $response_counts =  $request_data->result->responseCounts;
-  //print_r($response_counts);
-  //exit;
+
   return $response_counts;
  }
 
@@ -117,9 +122,9 @@ function qualtricsxm_count_survey_submissions($survey_id) {
  *  List of surveys in array format.
  */
 function qualtricsxm_get_surveys() {
-  $survey = _qualtricsxm_api_http_request(array('surveys'=>''));
+  $survey = _qualtricsxm_api_http_request(array('surveys' => ''));
   if ($survey->code != 200) {
-    drupal_set_message("Survey is not available", "warning");
+    drupal_set_message(t("Survey is not available"), "warning");
     return FALSE;
   }
 
@@ -141,10 +146,10 @@ function qualtricsxm_get_surveys() {
  *  Survey info in array format.
  */
 function qualtricsxm_get_survey_info($survey_id) {
-  $survey = _qualtricsxm_api_http_request(array('surveys'=>$survey_id));
+  $survey = _qualtricsxm_api_http_request(array('surveys' => $survey_id));
 
   if ($survey->code != 200) {
-    drupal_set_message("Survey is not available", "warning");
+    drupal_set_message(t("Survey is not available"), "warning");
     return FALSE;
   }
 
@@ -186,12 +191,15 @@ function theme_qualtricsxm_embed_survey($vars) {
   $height = !empty($vars['height']) ? 'height="' . $vars['height'] . '"' : NULL;
 
   if (empty($height)) {
-    drupal_add_js(drupal_get_path("module", "qualtricsxm")."/js/iframe_resize.js");
+    //Ensure iframe_resize kick in.
+    drupal_add_js(drupal_get_path("module", "qualtricsxm") . "/js/iframe_resize.js");
   }
-  //TODO iframe auto-fit in window js.
-  $iframe_url = url(variable_get('qualtricsxm_embed_url', QUALTRICS_EMBED_URL)) . "/" .$survey_params['survey_id'];
+
+  $iframe_url = url(variable_get('qualtricsxm_embed_url', QUALTRICS_EMBED_URL)) . "/" . $survey_params['survey_id'];
+
   $iframe = <<<IFRAME
 <iframe src="$iframe_url" $height $width frameborder="0" scrolling="no" class="qualtrics_iframe"></iframe>
 IFRAME;
+
   return $iframe;
 }

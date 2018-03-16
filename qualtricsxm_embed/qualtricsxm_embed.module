@@ -1,4 +1,9 @@
 <?php
+/**
+ * @file
+ *
+ * Qualtrics field module.
+ */
 
 /**
  * Implements hook_field_info().
@@ -49,7 +54,7 @@ function qualtricsxm_embed_field_formatter_view($entity_type, $entity, $field, $
     case 'field_qualtricsxm_iframe':
       foreach ($items as $delta => $item) {
         $theme_vars = array(
-          'survey' => array('survey_id' => $item['sid'],),
+          'survey' => array('survey_id' => $item['sid']),
           'width' => $field['settings']['qualtricsxm_embed_width'],
           'height' => $field['settings']['qualtricsxm_embed_height'],
         );

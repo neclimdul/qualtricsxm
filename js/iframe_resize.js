@@ -1,7 +1,12 @@
+/**
+ * @file
+ *
+ * Resize iframe height to fix the iframe content.
+ */
+
 (function ($) {
 
   // Create IE + others compatible event handler
-
   var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
   var eventer = window[eventMethod];
   var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
