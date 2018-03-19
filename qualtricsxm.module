@@ -21,12 +21,13 @@ function qualtricsxm_menu() {
     'access arguments' => array('access qualtricsxm survey'),
   );
 
-  $items['admin/config/qualtricsxm'] = array(
+  $items['admin/config/content/qualtricsxm'] = array(
+    'title' => 'QualtricsXM settings',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('qualtricsxm_config_settings'),
     'access arguments' => array('administer qualtricsxm settings'),
-    'title' => 'QualtricsXM settings',
     'description' => 'Settings for the third-party survey embedding from Qualtrics.',
+    'type' => MENU_NORMAL_ITEM,
     'file' => 'qualtricsxm.admin.inc'
   );
 
@@ -45,6 +46,7 @@ function qualtricsxm_permission() {
     'administer qualtricsxm settings' => array(
       'title' => t('Administer Qualtrics Settings'),
       'description' => t('Allow a user, usually an admin, to configure the settings for the Qualtrics module.'),
+      'restrict access' => TRUE,  
     ),
   );
 }

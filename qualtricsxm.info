@@ -1,8 +1,8 @@
-name = Qualtricsxm
+name = QualtricsXM
 description = Qualtrics eXperience Management.
 package = Qualtricsxm
 core = 7.x
-configure = admin/config/qualtricsxm
+configure = admin/config/content/qualtricsxm
 files[] = qualtricsxm.admin.inc
 files[] = qualtricsxm.module
 api = 3
