@@ -61,14 +61,18 @@
       $survey = $this->httpRequest(array('surveys' => ''));
 
       if ($survey->code != 200) {
-        drupal_set_message(t("Survey is not available"), "warning");
         return FALSE;
       }
 
       $survey_data = json_decode($survey->data);
 
+      //Make sure the legacy function working, and renderable by theme_table.
       foreach ($survey_data->result->elements as $element) {
         $surveys_array[$element->id]['surveyname'] = $element->name;
+        $surveys_array[$element->id]['id'] = $element->id;
+        $surveys_array[$element->id]['ownerId'] = $element->ownerId;
+        $surveys_array[$element->id]['lastModified'] = $element->lastModified;
+        $surveys_array[$element->id]['isActive'] = $element->isActive;
       }
       return $surveys_array;
     }
@@ -80,10 +84,8 @@
      * @return mixed
      */
     public function getSubmissions($survey_id) {
-      $request_data = $this->httpRequest($survey_id);
-
+      $request_data = $this->getSurvey($survey_id);
       $response_counts =  $request_data->result->responseCounts;
-
       return $response_counts;
     }
 

@@ -5,10 +5,12 @@
  * Main module.
  */
 
+$secure_embed = !empty(variable_get('qualtricsxm_secure_embed')) ? "https://" : "http://";
 $embed_base_url  = !empty(variable_get("qualtricsxm_datacenter"))?
-  "https://" . trim(variable_get("qualtricsxm_datacenter")) .".qualtrics.com/jfe/form" :
-  'https://survey.qualtrics.com/jfe/form';
+  $secure_embed . trim(variable_get("qualtricsxm_datacenter")) .".qualtrics.com/jfe/form" :
+  $secure_embed . 'survey.qualtrics.com/jfe/form';
 $api_token = !empty(variable_get('qualtricsxm_api_token'))?variable_get('qualtricsxm_api_token') : "";
+
 
 define('QUALTRICS_BASE_URL', 'https://survey.qualtrics.com/API/v3/');
 define('QUALTRICS_EMBED_URL', $embed_base_url);
@@ -31,12 +33,64 @@ function qualtricsxm_menu() {
     'page arguments' => array('qualtricsxm_config_settings'),
     'access arguments' => array('administer qualtricsxm settings'),
     'description' => 'Settings for the third-party survey embedding from Qualtrics.',
-    'type' => MENU_NORMAL_ITEM,
+
     'file' => 'qualtricsxm.admin.inc'
+  );
+
+  $items['admin/config/content/qualtricsxm/settings'] = array(
+    'title' => 'Settings',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10
+  );
+
+  $items['admin/config/content/qualtricsxm/surveys'] = array(
+    'title' => 'Surveys',
+    'type' => MENU_LOCAL_TASK,
+    'page callback' => 'qualtricsxm_surveys_list',
+    'access arguments' => array('administer qualtricsxm settings')
   );
 
   return $items;
 }
+
+  /**
+   * Render a mata data table in config admin tab.
+   *
+   * @return array|string
+   */
+  function qualtricsxm_surveys_list() {
+    $surveys = qualtricsxm_get_surveys();
+
+    if (!$surveys) {
+      Return "Qualtrics not connected.";
+    }
+
+    $table = &drupal_static(__FUNCTION__);
+    if (!isset($table)) {
+      if ($cache = cache_get('admin_table_cache')) {
+        $table = $cache->data;
+      }
+      else {
+        foreach ($surveys as $survey) {
+          $id = $survey['id'];
+          $submissions = qualtricsxm_count_survey_submissions($id);
+          $survey['auditable'] = $submissions->auditable;
+          $survey['generated'] = $submissions->generated;
+          $survey['deleted'] = $submissions->deleted;
+          $survey['id'] = "<a href=/qualtricsxm/survey/$id>" . $id . "</a>";
+          $row[] =  $survey;
+        }
+        $table = array(
+          '#theme' => 'table',
+          '#header' => array(t('Name'), t('Survey ID'), t('User ID'), t('Last Updated'), t('is Active'), t('Auditable'), t('Generated'), t('Deleted')),
+          '#rows' => $row
+        );
+        cache_set('admin_table_cache', $table, 'cache', time() + 60*60*4); //4hours;
+      }
+    }
+
+    return $table;
+  }
 
 /**
  * Implementation of hook_permission().
@@ -64,7 +118,8 @@ function qualtricsxm_permission() {
  *  The page content.
  */
 function qualtricsxm_survey_page($survey_id) {
-  $survey_data = qualtricsxm_get_survey_info($survey_id);
+  $qualtrics = new qualtricsxm(QUALTRICS_BASE_URL, API_TOKEN);
+  $survey_data = $qualtrics->getSurvey(array('surveys' => $survey_id));
 
   if (!$survey_data) {
     return t('Survey is unavailable.');
@@ -102,26 +157,25 @@ function qualtricsxm_count_survey_submissions($survey_id) {
  *  List of surveys in array format.
  */
 function qualtricsxm_get_surveys() {
-  //$survey = _qualtricsxm_api_http_request(array('surveys' => ''));
-  $qualtrics = new qualtricsxm(QUALTRICS_BASE_URL, API_TOKEN);
-  $surveys_array = $qualtrics->getSurveyList();
-  return $surveys_array;
+  $surveys = &drupal_static(__FUNCTION__);
+
+  if (!isset($surveys)) {
+    if ($cache = cache_get('qualtrics_surveys_list_cache')) {
+      $surveys = $cache->data;
+    }
+    else {
+      $qualtrics = new qualtricsxm(QUALTRICS_BASE_URL, API_TOKEN);
+      $surveys_array = $qualtrics->getSurveyList();
+      if (!empty($surveys_array)) {
+        //Only cache the right data.
+        cache_set('qualtrics_surveys_list_cache', $surveys_array, 'cache', time() + 60*60*4);//4 hours
+        $surveys = $surveys_array;
+      }
+    }
   }
 
-
-/**
- * Implementation of getSurvey Qualtrics API.
- *
- * @param $survey_id
- *  The ID of the Survey to retrieve information for.
- * @return array
- *  Survey info in array format.
- */
-function qualtricsxm_get_survey_info($survey_id) {
-  $qualtrics = new qualtricsxm(QUALTRICS_BASE_URL, API_TOKEN);
-  $survey_data = $qualtrics->getSurvey(array('surveys' => $survey_id));
-  return $survey_data;
-}
+  return $surveys;
+  }
 
 
 /**
@@ -162,7 +216,6 @@ function theme_qualtricsxm_embed_survey($vars) {
     drupal_add_js(drupal_get_path("module", "qualtricsxm") . "/js/iframe_resize.js");
   }
 
-  //$iframe_url = url(variable_get('qualtricsxm_embed_url', QUALTRICS_EMBED_URL)) . "/" . $survey_params['survey_id'];
   $iframe_url = url( QUALTRICS_EMBED_URL) . "/" . $survey_params['survey_id'];
 
   $iframe = <<<IFRAME

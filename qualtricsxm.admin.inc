@@ -14,18 +14,12 @@ function qualtricsxm_config_settings() {
     '#collapsed' => FALSE,
   );
 
-  $form['api']['qualtricsxm_base_url'] = array(
-    '#type' => 'textfield',
-    '#title' => t('APIs base URL'),
-    '#default_value' => variable_get('qualtricsxm_base_url', QUALTRICS_BASE_URL),
-    '#description' => t('The base URL to invoke the Qualtrics REST APIs.'),
-  );
-
   $form['api']['qualtricsxm_api_token'] = array(
     '#type' => 'textfield',
     '#title' => t('API token'),
+    '#required' => TRUE,
     '#default_value' => variable_get('qualtricsxm_api_token', API_TOKEN),
-    '#description' => t('Your API token.'),
+    '#description' => t('Your API token. qualtricsxm_embed module requires API token.'),
   );
 
   $form['api']['qualtricsxm_datacenter'] = array(
@@ -43,33 +37,19 @@ function qualtricsxm_config_settings() {
     '#description' => t('Your datacenter.') . " <a href='https://api.qualtrics.com/docs/finding-qualtrics-ids' target='_blank'>" . "Find your Organization ID</a>",
   );
 
-//  $form['embedding'] = array(
-//    '#type' => 'fieldset',
-//    '#title' => t('Embedding options'),
-//    '#collapsible' => TRUE,
-//    '#collapsed' => FALSE,
-//  );
-//
-//  $form['embedding']['qualtricsxm_embed_url'] = array(
-//    '#type' => 'textfield',
-//    '#title' => t('Base URL for embedding'),
-//    '#default_value' => variable_get('qualtricsxm_embed_url', QUALTRICS_EMBED_URL),
-//    '#description' => t('The base URL to be used as source for the survey embedding.'),
-//  );
-//
-//  $form['embedding']['qualtricsxm_secure_embed'] = array(
-//    '#type' => 'checkbox',
-//    '#title' => t('Secure embedding'),
-//    '#default_value' => variable_get('qualtricsxm_secure_embed', FALSE),
-//    '#description' => t('Whether to use https:// for embedding a survey or not.'),
-//  );
-//
-//  $form['embedding']['qualtricsxm_embed_username'] = array(
-//    '#type' => 'checkbox',
-//    '#title' => t('Embed username'),
-//    '#default_value' => variable_get('qualtricsxm_embed_username', FALSE),
-//    '#description' => t("Whether to append the Drupal username as extra parameter to the survey's URL used to embed it."),
-//  );
+  $form['embedding'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Embedding options'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['embedding']['qualtricsxm_secure_embed'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Secure embedding'),
+    '#default_value' => variable_get('qualtricsxm_secure_embed', TRUE),
+    '#description' => t('Whether to use https:// for embedding a survey or not.'),
+  );
 
   return system_settings_form($form);
 }
