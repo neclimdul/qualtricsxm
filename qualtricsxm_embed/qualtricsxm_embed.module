@@ -55,20 +55,10 @@ function qualtricsxm_embed_field_formatter_view($entity_type, $entity, $field, $
       foreach ($items as $delta => $item) {
         $theme_vars = array(
           'survey' => array('survey_id' => $item['sid']),
-          'width' => $field['settings']['qualtricsxm_embed_width'],
-          'height' => $field['settings']['qualtricsxm_embed_height'],
+          'width' => $field['settings']['custom']['qualtricsxm_embed_width'],
+          'height' => $field['settings']['custom']['qualtricsxm_embed_height'],
+          'enable_iframe_resize'=> $field['settings']['auto']['qualtricsxm_embed_enable_iframe_auto_resize'],
         );
-//        switch ($field['settings']['qualtricsxm_embed_append_username']) {
-//          case 'system':
-//            if (variable_get('qualtricsxm_embed_username', 'no') === 'no') {
-//              break;
-//            }
-//          case 'yes':
-//            global $user;
-//            // TODO change param name from username to uid in the future. Passing UID as value anyway.
-//            $theme_vars['survey']['username'] = $user->uid;
-//            break;
-//        }
         $element[$delta] = array(
           '#markup' => theme('qualtricsxm_embed_survey', $theme_vars),
         );
@@ -126,73 +116,61 @@ function qualtricsxm_embed_field_widget_form(&$form, &$form_state, $field, $inst
  */
 function qualtricsxm_embed_field_settings_form($field, $instance, $has_data) {
   $settings = $field['settings'];
-  $form['qualtricsxm_embed_width'] = array(
+
+  $form['auto'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Auto resize iframe'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['auto']['qualtricsxm_embed_enable_iframe_auto_resize'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Iframe auto resize'),
+    '#default_value' => isset($settings['auto']['qualtricsxm_embed_enable_iframe_auto_resize']) ? $settings['auto']['qualtricsxm_embed_enable_iframe_auto_resize'] : FALSE,
+    '#description' => t("To ensure the auto-resize iframe working, please copy the following code into Qualtrics form header. Untick this if custom iframe Width and Height have been given."),
+  );
+
+  $form['auto']['qualtricsxm_embed_cross_region_js'] = array(
+    '#type' => 'textarea',
+
+    '#default_value' => '<script> /*Use the "script" opening and closing tags only if you are placing this script in the header of your survey(to run on all pages)*/
+
+   Qualtrics.SurveyEngine.addOnload(function()
+
+   {
+
+       // Wait half a second and then adjust the iframe height to fit the questions
+
+               setTimeout(function () {
+
+                  parent.postMessage( document.getElementById("Wrapper").scrollHeight+"px", "'.$GLOBALS['base_url'] .'");
+
+                                                }, 500);
+   });
+
+</script>',
+
+  );
+
+  $form['custom'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Custom'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['custom']['qualtricsxm_embed_width'] = array(
     '#type' => 'textfield',
     '#title' => t('Survey iframe width'),
-    '#default_value' => isset($settings['qualtricsxm_embed_width']) ? $settings['qualtricsxm_embed_width'] : NULL,
+    '#default_value' => isset($settings['custom']['qualtricsxm_embed_width']) ? $settings['custom']['qualtricsxm_embed_width'] : NULL,
     '#element_validate' => array('element_validate_integer_positive'),
-    '#description' => t('The width for the iframe.'),
+    '#description' => t('The width for the iframe. Leave it empty if Auto Resize Iframe has been enabled.'),
   );
-  $form['qualtricsxm_embed_height'] = array(
+  $form['custom']['qualtricsxm_embed_height'] = array(
     '#type' => 'textfield',
     '#title' => t('Survey iframe height'),
-    '#default_value' => isset($settings['qualtricsxm_embed_height']) ? $settings['qualtricsxm_embed_height'] : NULL,
+    '#default_value' => isset($settings['custom']['qualtricsxm_embed_height']) ? $settings['custom']['qualtricsxm_embed_height'] : NULL,
     '#element_validate' => array('element_validate_integer_positive'),
-    '#description' => t('The height for the iframe.'),
+    '#description' => t('The height for the iframe. Leave it empty if Auto Resize Iframe has been enabled'),
   );
-//  $form['qualtricsxm_embed_append_username'] = array(
-//    '#type' => 'radios',
-//    '#title' => t('Pass username as parameter'),
-//    '#default_value' => isset($settings['qualtricsxm_append_username']) ? $settings['qualtricsxm_append_username'] : NULL,
-//    '#required' => TRUE,
-//    '#options' => array(
-//      'no' => t('No'), 'yes' => t('Yes'),
-//      'system' => t('Inherit from !settings', array('!settings' => l('system wide settings', 'admin/config/qualtricsxm')))
-//    ),
-//    '#description' => t("Choose whether to pass the current user's name to the survey. Your survey must be configured on Qualtrics to accept the parameter 'username'."),
-//  );
   return $form;
 }
-
-/**
- * Implements hook_field_settings_form().
- */
-//function qualtricsxm_embed_field_instance_settings_form($field, $instance) {
-//  $instance_settings = $instance['settings'];
-//  $field_settings = $field['settings'];
-//  $form['qualtricsxm_embed_width_instance'] = array(
-//    '#type' => 'textfield',
-//    '#title' => t('Survey iframe width'),
-//    '#default_value' => !empty($instance_settings['qualtricsxm_embed_width_instance']) ?
-//        $instance_settings['qualtricsxm_embed_width_instance'] :
-//        $field_settings['qualtricsxm_embed_width'],
-//    '#required' => TRUE,
-//    '#element_validate' => array('element_validate_integer_positive'),
-//    '#description' => t('The width for the iframe.'),
-//  );
-//  $form['qualtricsxm_embed_height_instance'] = array(
-//    '#type' => 'textfield',
-//    '#title' => t('Survey iframe height'),
-//    '#default_value' => !empty($instance_settings['qualtricsxm_embed_height_instance']) ?
-//        $instance_settings['qualtricsxm_embed_height_instance'] :
-//        $field_settings['qualtricsxm_embed_height'],
-//    '#required' => TRUE,
-//    '#element_validate' => array('element_validate_integer_positive'),
-//    '#description' => t('The height for the iframe.'),
-//  );
-//  $form['qualtricsxm_embed_append_username_instance'] = array(
-//    '#type' => 'radios',
-//    '#title' => t('Pass username as parameter'),
-//    '#default_value' => !empty($instance_settings['qualtrics_embed_append_username_instance']) ?
-//            $instance_settings['qualtricsxm_embed_append_username_instance'] :
-//            $field_settings['qualtricsxm_embed_append_username'],
-//    '#required' => TRUE,
-//    '#options' => array(
-//      'no' => t('No'), 'yes' => t('Yes'),
-//      'system' => t('Inherit from !settings', array('!settings' => l('system wide settings', 'admin/config/qualtricsxm')))
-//    ),
-//    '#description' => t("Choose whether to pass the current user's name to the survey. Your survey must be configured on Qualtrics to accept the parameter 'username'."),
-//  );
-//  return $form;
-//}
-
