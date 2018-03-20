@@ -16,7 +16,7 @@
      * @param array $url_params
      * @return object
      */
-    public function httpRequest($url_params = array()) {
+    public function httpRequest($url_params) {
      $options = array(
         'method' => 'GET',
         'timeout' => 15,
@@ -40,8 +40,8 @@
      * @param $survey_id
      * @return bool|mixed
      */
-    public function getSurvey ($survey_id) {
-      $survey =  $this->httpRequest(array('surveys' => $survey_id));
+    public function getSurvey ($url_params) {
+      $survey =  $this->httpRequest($url_params);
 
       if ($survey->code != 200) {
         return FALSE;
