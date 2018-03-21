@@ -40,8 +40,8 @@
      * @param $survey_id
      * @return bool|mixed
      */
-    public function getSurvey ($url_params) {
-      $survey =  $this->httpRequest($url_params);
+    public function getSurvey ($survey_id) {
+      $survey =  $this->httpRequest(array("surveys" => $survey_id));
 
       if ($survey->code != 200) {
         return FALSE;

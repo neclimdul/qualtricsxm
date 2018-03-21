@@ -119,7 +119,7 @@ function qualtricsxm_permission() {
  */
 function qualtricsxm_survey_page($survey_id) {
   $qualtrics = new qualtricsxm(QUALTRICS_BASE_URL, API_TOKEN);
-  $survey_data = $qualtrics->getSurvey(array('surveys' => $survey_id));
+  $survey_data = $qualtrics->getSurvey($survey_id);
 
   if (!$survey_data) {
     return t('Survey is unavailable.');
