@@ -7,7 +7,7 @@
 
 $secure_embed = !empty(variable_get('qualtricsxm_secure_embed')) ? "https://" : "http://";
 $embed_base_url  = !empty(variable_get("qualtricsxm_datacenter"))?
-  $secure_embed . trim(variable_get("qualtricsxm_datacenter")) .".qualtrics.com/jfe/form" :
+  $secure_embed . trim(variable_get("qualtricsxm_datacenter")) . ".qualtrics.com/jfe/form" :
   $secure_embed . 'survey.qualtrics.com/jfe/form';
 $api_token = !empty(variable_get('qualtricsxm_api_token'))?variable_get('qualtricsxm_api_token') : "";
 
@@ -131,7 +131,7 @@ function qualtricsxm_survey_page($survey_id) {
     'survey' => array(
       // HACK: Passing UID to username.
       'survey_id' => $survey_id, 'username' => $user->uid, 'uid' => $user->uid
-    ), 'width' => "100%", 'height' => "900",  'scrolling' =>"yes"
+    ), 'width' => "100%", 'height' => "900",  'scrolling' => "yes"
   ));
 }
 

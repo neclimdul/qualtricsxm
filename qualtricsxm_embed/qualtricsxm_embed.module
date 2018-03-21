@@ -57,7 +57,7 @@ function qualtricsxm_embed_field_formatter_view($entity_type, $entity, $field, $
           'survey' => array('survey_id' => $item['sid']),
           'width' => $field['settings']['custom']['qualtricsxm_embed_width'],
           'height' => $field['settings']['custom']['qualtricsxm_embed_height'],
-          'enable_iframe_resize'=> $field['settings']['auto']['qualtricsxm_embed_enable_iframe_auto_resize'],
+          'enable_iframe_resize' => $field['settings']['auto']['qualtricsxm_embed_enable_iframe_auto_resize'],
         );
         $element[$delta] = array(
           '#markup' => theme('qualtricsxm_embed_survey', $theme_vars),
@@ -143,7 +143,7 @@ function qualtricsxm_embed_field_settings_form($field, $instance, $has_data) {
 
                setTimeout(function () {
 
-                  parent.postMessage( document.getElementById("Wrapper").scrollHeight+"px", "'.$GLOBALS['base_url'] .'");
+                  parent.postMessage( document.getElementById("Wrapper").scrollHeight+"px", "' . $GLOBALS['base_url'] . '");
 
                                                 }, 500);
    });
