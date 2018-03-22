@@ -24,10 +24,10 @@ function qualtricsxm_config_settings() {
 
   $form['api']['qualtricsxm_datacenter'] = array(
     '#type' => 'textfield',
-    '#title' => t('Datacenter'),
+    '#title' => t('Datacenter ID'),
     '#required' => TRUE,
     '#default_value' => variable_get('qualtricsxm_datacenter', API_TOKEN),
-    '#description' => t('Your datacenter.') . " <a href='https://api.qualtrics.com/docs/root-url' target='_blank'>" . "Find your DataCenter</a>",
+    '#description' => t('Your datacenter ID, e.g. au2.') . " <a href='https://api.qualtrics.com/docs/root-url' target='_blank'>" . "Find your DataCenter</a>",
   );
 
   $form['api']['qualtricsxm_organization_id'] = array(

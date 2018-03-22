@@ -66,6 +66,7 @@ function qualtricsxm_menu() {
     }
 
     $table = &drupal_static(__FUNCTION__);
+
     if (!isset($table)) {
       if ($cache = cache_get('admin_table_cache')) {
         $table = $cache->data;
