@@ -9,7 +9,4 @@ files[] = src/qualtricsxm.php
 api = 3
 
 ; Information added by drupal.org packaging script on 2013-10-01
-version = "7.x-1.x-dev"
 core = "7.x"
-project = "qualtricsxm"
-datestamp = "1520920122"

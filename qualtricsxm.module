@@ -17,7 +17,14 @@ define('QUALTRICS_EMBED_URL', $embed_base_url);
 define('API_TOKEN', $api_token);
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_help();
+ */
+function qualtricsxm_help() {
+
+}
+
+/**
+ * Implements of hook_menu().
  */
 function qualtricsxm_menu() {
 

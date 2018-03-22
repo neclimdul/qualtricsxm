@@ -6,6 +6,13 @@
  */
 
 /**
+ * Implements hook_help().
+ */
+function qualtricsxm_embed_help() {
+
+}
+
+/**
  * Implements hook_field_info().
  *
  * Provides the description of the field.
