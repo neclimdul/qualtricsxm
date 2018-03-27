@@ -3,12 +3,14 @@
 /**
  * @file
  * Qualtrics admin conf form.
+ *
  */
 
 /**
  * Callback function for hook_menu().
+ *
  * @return array
- *  Rendable form array.
+ *   Rendable form array.
  */
 function qualtricsxm_config_settings() {
 
@@ -58,5 +60,3 @@ function qualtricsxm_config_settings() {
 
   return system_settings_form($form);
 }
-
-

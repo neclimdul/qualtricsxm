@@ -62,13 +62,15 @@ function qualtricsxm_menu() {
 
 /**
  * Render a mata data table in config admin tab.
- * @return array|string
+ *
+ * @return array
+ *  rendable table array;
  */
 function qualtricsxm_surveys_list() {
   $surveys = qualtricsxm_get_surveys();
 
   if (!$surveys) {
-    Return "Qualtrics not connected.";
+    return "Qualtrics not connected.";
   }
 
   $table = &drupal_static(__FUNCTION__);
@@ -85,14 +87,21 @@ function qualtricsxm_surveys_list() {
         $survey['generated'] = $submissions->generated;
         $survey['deleted'] = $submissions->deleted;
         $survey['id'] = "<a href=/qualtricsxm/survey/$id>" . $id . "</a>";
-        $row[] =  $survey;
+        $row[] = $survey;
       }
       $table = array(
         '#theme' => 'table',
-        '#header' => array(t('Name'), t('Survey ID'), t('User ID'), t('Last Updated'), t('is Active'), t('Auditable'), t('Generated'), t('Deleted')),
-        '#rows' => $row
+        '#header' => array(t('Name'),
+          t('Survey ID'),
+          t('User ID'),
+          t('Last Updated'),
+          t('is Active'),
+          t('Auditable'),
+          t('Generated'),
+          t('Deleted')),
+        '#rows' => $row,
       );
-      cache_set('admin_table_cache', $table, 'cache', time() + 60 * 60 * 4); //4hours;
+      cache_set('admin_table_cache', $table, 'cache', time() + 60 * 60 * 4); // 4hours.
     }
   }
 
@@ -100,7 +109,7 @@ function qualtricsxm_surveys_list() {
 }
 
 /**
- * Implementation of hook_permission().
+ * Implements hook_permission().
  */
 function qualtricsxm_permission() {
   return array(
@@ -119,10 +128,11 @@ function qualtricsxm_permission() {
 /**
  * Page callback for loading a survey page.
  *
- * @param $survey_id
- *  ID of the survey to be loaded.
+ * @param $survey_id string
+ *   ID of the survey to be loaded.
+ *
  * @return string
- *  The page content.
+ *   The page content.
  */
 function qualtricsxm_survey_page($survey_id) {
   $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
@@ -134,9 +144,12 @@ function qualtricsxm_survey_page($survey_id) {
   global $user;
 
   drupal_set_title($survey_data->result->name);
+  // HACK: Passing UID to username.
   return theme('qualtricsxm_embed_survey', array(
     'survey' => array (
-      'survey_id' => $survey_id, 'username' => $user->uid, 'uid' => $user->uid, // HACK: Passing UID to username.
+      'survey_id' => $survey_id,
+      'username' => $user->uid,
+      'uid' => $user->uid,
     ),
     'width' => "100%",
     'height' => "900",
@@ -147,8 +160,10 @@ function qualtricsxm_survey_page($survey_id) {
 
 /**
  * Help function to get the survey responseCounts.
- * @param $survey_id
+ *
+ * @param $survey_id string
  *  ID of the survey to be loaded.
+ *
  * @return bool|string
  *  FALSE|Json
  */
@@ -159,7 +174,6 @@ function qualtricsxm_count_survey_submissions($survey_id) {
 
   return $response_counts;
  }
-
 
 /**
  * Retrieving the list of surveys from Qualtrics.
@@ -177,7 +191,7 @@ function qualtricsxm_get_surveys() {
       $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
       $surveys_array = $qualtrics->getSurveyList();
       if (!empty($surveys_array)) {
-        //Only cache the right data.
+        // Only cache the right data.
         cache_set('qualtrics_surveys_list_cache', $surveys_array, 'cache', time() + 60 * 60 * 4);// 4 hours
         $surveys = $surveys_array;
       }
@@ -186,7 +200,6 @@ function qualtricsxm_get_surveys() {
 
   return $surveys;
   }
-
 
 /**
  * Implements hook_theme().
@@ -204,6 +217,7 @@ function qualtricsxm_theme($existing, $type, $theme, $path) {
  *
  * @param $vars
  *  Theme function vars.
+
  * @return string
  *  The rendered HTML.
  */
@@ -221,7 +235,7 @@ function theme_qualtricsxm_embed_survey($vars) {
     drupal_add_js(drupal_get_path("module", "qualtricsxm") . "/js/iframe_resize.js");
   }
 
-  $iframe_url = url( QUALTRICSXM_EMBED_URL) . "/" . $survey_params['survey_id'];
+  $iframe_url = url(QUALTRICSXM_EMBED_URL) . "/" . $survey_params['survey_id'];
 
   $iframe = <<<IFRAME
 <iframe src="$iframe_url" $height $width frameborder="0" $scrolling class="qualtrics_iframe"></iframe>
