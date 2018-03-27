@@ -11,18 +11,19 @@ class Qualtricsxm {
   /**
    * Qualtricsxm constructor.
    */
-  public function __construct ($apiBaseUrl, $apiToken) {
+  public function __construct($apiBaseUrl, $apiToken) {
     $this->api_base_url = $apiBaseUrl;
     $this->api_token = $apiToken;
   }
 
   /**
    * API call.
+   *
    * @param array $url_params
-   *   API URL params
+   *   API URL params.
    *
    * @return object
-   *   Requested data
+   *   Requested data.
    */
   public function httpRequest($url_params) {
     $options = array(
@@ -46,8 +47,10 @@ class Qualtricsxm {
    * Get survey by surveyID.
    *
    * @param $survey_id string
+   *    Survey ID.
    *
    * @return bool|string
+   *    FALSE or json data.
    */
   public function getSurvey ($survey_id) {
     $survey = $this->httpRequest(array("surveys" => $survey_id));
@@ -64,7 +67,7 @@ class Qualtricsxm {
    * Get survey list.
    *
    * @return bool|array
-   * TODO merge into getSurve.
+   *    TODO merge into getSurve.
    */
   public function getSurveyList() {
     $survey = $this->httpRequest(array('surveys' => ''));
@@ -90,13 +93,15 @@ class Qualtricsxm {
    * Get extra submission meta data from API call.
    *
    * @param $survey_id string
+   *    Survey ID.
    *
    * @return bool|string
+   *    FALSE or json data.
    */
   public function getSubmissions($survey_id) {
     $request_data = $this->getSurvey($survey_id);
 
-    if(!$request_data) {
+    if (!$request_data) {
       return FALSE;
     }
     $response_counts = $request_data->result->responseCounts;
