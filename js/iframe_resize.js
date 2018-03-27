@@ -12,15 +12,15 @@
   var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
 
   // Listen to message from survey
-  eventer(messageEvent,function( e ) {
+  eventer( messageEvent, function(e) {
 
-    console.log('QUALTRICS: Received message!:  ', e.data );
+    console.log('QUALTRICS: Received message!:  ', e.data);
 
-    if(e.data=="closeQSIWindow") {
+    if (e.data === 'closeQSIWindow') {
 
       setTimeout(function () {
 
-        $('.qualtrics_iframe').height("200px");
+        $('.qualtrics_iframe').height('200px');
 
       }, 5000);
 
@@ -28,8 +28,8 @@
 
       // Just do the Frame Expansion if pixel height is passed
       // $('#qualtrics-feedback-zone').contents()[0].style.height = e.data;
-      $('.qualtrics_iframe').height( e.data );
-      $('.qualtrics_iframe').width( "100%" );
+      $('.qualtrics_iframe').height(e.data);
+      $('.qualtrics_iframe').width('100%');
 
     }
 
