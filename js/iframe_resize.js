@@ -12,7 +12,7 @@
   var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
 
   // Listen to message from survey
-  eventer(messageEvent, function(e) {
+  eventer(messageEvent, function (e) {
 
     console.log('QUALTRICS: Received message!:  ', e.data);
 
