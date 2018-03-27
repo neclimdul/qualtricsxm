@@ -46,11 +46,11 @@ class Qualtricsxm {
   /**
    * Get survey by surveyID.
    *
-   * @param $survey_id string
-   *    Survey ID.
+   * @param string $survey_id
+   *   Survey ID.
    *
    * @return bool|string
-   *    FALSE or json data.
+   *   FALSE or json data.
    */
   public function getSurvey ($survey_id) {
     $survey = $this->httpRequest(array("surveys" => $survey_id));
@@ -67,7 +67,7 @@ class Qualtricsxm {
    * Get survey list.
    *
    * @return bool|array
-   *    TODO merge into getSurve.
+   *   TODO merge into getSurve.
    */
   public function getSurveyList() {
     $survey = $this->httpRequest(array('surveys' => ''));
@@ -93,10 +93,10 @@ class Qualtricsxm {
    * Get extra submission meta data from API call.
    *
    * @param $survey_id string
-   *    Survey ID.
+   *   Survey ID.
    *
    * @return bool|string
-   *    FALSE or json data.
+   *   FALSE or json data.
    */
   public function getSubmissions($survey_id) {
     $request_data = $this->getSurvey($survey_id);
