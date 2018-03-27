@@ -25,7 +25,7 @@ class Qualtricsxm {
    * @return object
    *   Requested data.
    */
-  public function httpRequest($url_params) {
+  public function httpRequest($url_params = array()) {
     $options = array(
       'method' => 'GET',
       'timeout' => 15,
@@ -52,7 +52,7 @@ class Qualtricsxm {
    * @return bool|string
    *   FALSE or json data.
    */
-  public function getSurvey ($survey_id) {
+  public function getSurvey($survey_id) {
     $survey = $this->httpRequest(array("surveys" => $survey_id));
 
     if ($survey->code != 200) {
@@ -92,7 +92,7 @@ class Qualtricsxm {
   /**
    * Get extra submission meta data from API call.
    *
-   * @param $survey_id string
+   * @param string $survey_id
    *   Survey ID.
    *
    * @return bool|string

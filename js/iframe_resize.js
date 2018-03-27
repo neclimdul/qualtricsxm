@@ -5,14 +5,14 @@
  */
 
 (function ($) {
-
+  'use strict';
   // Create IE + others compatible event handler
   var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
   var eventer = window[eventMethod];
   var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
 
   // Listen to message from survey
-  eventer( messageEvent, function(e) {
+  eventer(messageEvent, function(e) {
 
     console.log('QUALTRICS: Received message!:  ', e.data);
 
@@ -24,7 +24,8 @@
 
       }, 5000);
 
-    } else {
+    }
+    else {
 
       // Just do the Frame Expansion if pixel height is passed
       // $('#qualtrics-feedback-zone').contents()[0].style.height = e.data;

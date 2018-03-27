@@ -2,8 +2,6 @@ name = QualtricsXM
 description = Qualtrics eXperience Management.
 package = Qualtricsxm
 configure = admin/config/content/qualtricsxm
-files[] = qualtricsxm.admin.inc
-files[] = qualtricsxm.module
 files[] = src/qualtricsxm.php
 api = 3
 

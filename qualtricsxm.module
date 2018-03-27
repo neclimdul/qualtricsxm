@@ -223,7 +223,7 @@ function qualtricsxm_theme($existing, $type, $theme, $path) {
  * @return string
  *   The rendered HTML.
  */
-function theme_qualtricsxm_embed_survey($vars) {
+function theme_qualtricsxm_embed_survey($vars = array()) {
 
   $survey_params = $vars['survey'];
 
