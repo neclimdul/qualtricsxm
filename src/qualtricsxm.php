@@ -10,9 +10,6 @@ class Qualtricsxm {
 
   /**
    * Qualtricsxm constructor.
-   *
-   * @param $apiBaseUrl string
-   * @param $apiToken string
    */
   public function __construct ($apiBaseUrl, $apiToken) {
     $this->api_base_url = $apiBaseUrl;
@@ -22,9 +19,10 @@ class Qualtricsxm {
   /**
    * API call.
    * @param array $url_params
-   *  API URL params
+   *   API URL params
    *
    * @return object
+   *   Requested data
    */
   public function httpRequest($url_params) {
     $options = array(

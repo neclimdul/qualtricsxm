@@ -64,7 +64,7 @@ function qualtricsxm_menu() {
  * Render a mata data table in config admin tab.
  *
  * @return array
- *  rendable table array;
+ *   rendable table array;
  */
 function qualtricsxm_surveys_list() {
   $surveys = qualtricsxm_get_surveys();
@@ -98,10 +98,12 @@ function qualtricsxm_surveys_list() {
           t('is Active'),
           t('Auditable'),
           t('Generated'),
-          t('Deleted')),
+          t('Deleted')
+        ),
         '#rows' => $row,
       );
-      cache_set('admin_table_cache', $table, 'cache', time() + 60 * 60 * 4); // 4hours.
+      // 4hours.
+      cache_set('admin_table_cache', $table, 'cache', time() + 60 * 60 * 4);
     }
   }
 
@@ -146,7 +148,7 @@ function qualtricsxm_survey_page($survey_id) {
   drupal_set_title($survey_data->result->name);
   // HACK: Passing UID to username.
   return theme('qualtricsxm_embed_survey', array(
-    'survey' => array (
+    'survey' => array(
       'survey_id' => $survey_id,
       'username' => $user->uid,
       'uid' => $user->uid,
@@ -162,10 +164,10 @@ function qualtricsxm_survey_page($survey_id) {
  * Help function to get the survey responseCounts.
  *
  * @param $survey_id string
- *  ID of the survey to be loaded.
+ *   ID of the survey to be loaded.
  *
  * @return bool|string
- *  FALSE|Json
+ *   FALSE|Json
  */
 function qualtricsxm_count_survey_submissions($survey_id) {
   // Invoke getResponseData API.
@@ -177,8 +179,9 @@ function qualtricsxm_count_survey_submissions($survey_id) {
 
 /**
  * Retrieving the list of surveys from Qualtrics.
+ *
  * @return array
- *  List of surveys in array format.
+ *   List of surveys in array format.
  */
 function qualtricsxm_get_surveys() {
   $surveys = &drupal_static(__FUNCTION__);
@@ -219,7 +222,7 @@ function qualtricsxm_theme($existing, $type, $theme, $path) {
  *  Theme function vars.
 
  * @return string
- *  The rendered HTML.
+ *   The rendered HTML.
  */
 function theme_qualtricsxm_embed_survey($vars) {
 
@@ -227,10 +230,10 @@ function theme_qualtricsxm_embed_survey($vars) {
 
   $width = !empty($vars['width']) ? 'width="' . $vars['width'] . '"' : NULL;
   $height = !empty($vars['height']) ? 'height="' . $vars['height'] . '"' : NULL;
-  $scrolling  = !empty($vars['scrolling']) ? 'scrolling="' . $vars['scrolling'] . '"' : 'scrolling = "no"';
+  $scrolling = !empty($vars['scrolling']) ? 'scrolling="' . $vars['scrolling'] . '"' : 'scrolling = "no"';
   $iframe_auto_resize = !empty($vars['enable_iframe_resize']) ? $vars['enable_iframe_resize'] : FALSE;
 
-  if ( empty($height) || $iframe_auto_resize ) {
+  if (empty($height) || $iframe_auto_resize) {
     // Ensure iframe_resize kick in.
     drupal_add_js(drupal_get_path("module", "qualtricsxm") . "/js/iframe_resize.js");
   }
