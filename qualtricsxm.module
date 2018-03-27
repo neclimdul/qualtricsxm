@@ -98,7 +98,7 @@ function qualtricsxm_surveys_list() {
           t('is Active'),
           t('Auditable'),
           t('Generated'),
-          t('Deleted')
+          t('Deleted'),
         ),
         '#rows' => $row,
       );
@@ -130,7 +130,7 @@ function qualtricsxm_permission() {
 /**
  * Page callback for loading a survey page.
  *
- * @param $survey_id string
+ * @param string
  *   ID of the survey to be loaded.
  *
  * @return string
@@ -159,11 +159,10 @@ function qualtricsxm_survey_page($survey_id) {
   ));
 }
 
-
 /**
  * Help function to get the survey responseCounts.
  *
- * @param $survey_id string
+ * @param string $survey_id
  *   ID of the survey to be loaded.
  *
  * @return bool|string
@@ -174,7 +173,7 @@ function qualtricsxm_count_survey_submissions($survey_id) {
   $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
   $response_counts = $qualtrics->getSubmissions($survey_id);
 
-  return $response_counts;
+return $response_counts;
  }
 
 /**
@@ -195,13 +194,13 @@ function qualtricsxm_get_surveys() {
       $surveys_array = $qualtrics->getSurveyList();
       if (!empty($surveys_array)) {
         // Only cache the right data.
-        cache_set('qualtrics_surveys_list_cache', $surveys_array, 'cache', time() + 60 * 60 * 4);// 4 hours
+        cache_set('qualtrics_surveys_list_cache', $surveys_array, 'cache', time() + 60 * 60 * 4);
         $surveys = $surveys_array;
       }
     }
   }
 
-  return $surveys;
+return $surveys;
   }
 
 /**
@@ -218,8 +217,8 @@ function qualtricsxm_theme($existing, $type, $theme, $path) {
 /**
  * Theme function to create the HTML code required to embed a Qualtrics survey.
  *
- * @param $vars
- *  Theme function vars.
+ * @param array $vars
+ *   Theme function vars.
 
  * @return string
  *   The rendered HTML.
@@ -244,5 +243,5 @@ function theme_qualtricsxm_embed_survey($vars) {
 <iframe src="$iframe_url" $height $width frameborder="0" $scrolling class="qualtrics_iframe"></iframe>
 IFRAME;
 
-  return $iframe;
+return $iframe;
 }
