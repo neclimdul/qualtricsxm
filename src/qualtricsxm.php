@@ -25,7 +25,7 @@ class Qualtricsxm {
    * @return object
    *   Requested data.
    */
-  public function httpRequest($url_params = array()) {
+  public function httpRequest(array $url_params) {
     $options = array(
       'method' => 'GET',
       'timeout' => 15,
