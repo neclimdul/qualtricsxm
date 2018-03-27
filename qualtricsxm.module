@@ -83,9 +83,9 @@ function qualtricsxm_surveys_list() {
       foreach ($surveys as $survey) {
         $id = $survey['id'];
         $submissions = qualtricsxm_count_survey_submissions($id);
-        $survey['auditable'] = $submissions->auditable;
-        $survey['generated'] = $submissions->generated;
-        $survey['deleted'] = $submissions->deleted;
+        $survey['auditable'] = empty($submissions->auditable) ? NULL : $submissions->auditable;
+        $survey['generated'] = empty($submissions->generated) ? NULL : $submissions->generated;
+        $survey['deleted'] = empty($submissions->deleted) ? NULL : $submissions->deleted;
         $survey['id'] = "<a href=/qualtricsxm/survey/$id>" . $id . "</a>";
         $row[] = $survey;
       }
