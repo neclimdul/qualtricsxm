@@ -14,11 +14,13 @@ module. We're keen to hear from you so please reach out if you have thoughts
 and ideas.
 
 * DESCRIPTION:
-Render an iFrame containing a Qualtrics survey/form into Drupal pages.
+Make it super-easy to select and render Qualtrics surveys/forms into Drupal 
+pages.
 
 * REQUIREMENTS:
-You will need a Qualtrics account and [generate an API token](https://www.qualtrics.com/support/integrations/api-integration/overview/#GeneratingAnAPIToken) 
-to use this module.
+You will need a Qualtrics account and you will need to generate an API token.
+See www.qualtrics.com/support/integrations/api-integration/overview/ for 
+details.
 
 * INSTALLATION:
 Once the module has been copied to your modules directory log in as 
@@ -26,11 +28,13 @@ administrator and navigate to the Modules area. Turn _on_ both QualtricsXM
 modules (qualtricsxm and qualtricsxm_embed). That's all there's to it! Next 
 follow the configuration instructions below to enter your Qualtrics API token 
 and create one or more _Content Types_ that your content authors can use to 
-embed surveys in their pages.
+embed surveys in their pages. 
+
+Installation and Configuration Video: https://youtu.be/t-Fs0XRXee8 
 
 * CONFIGURATION:
-To save you some time, we're planning to record a quick 3-minute video that show
-s you how to configure the QualtricsXM module. Watch this space...
+To save you some time, we've recorded a quick 3-minute video that shows
+you how to configure the QualtricsXM module. https://youtu.be/t-Fs0XRXee8
 
 1. Configure the QualtricsXM module by entering you API token and confirming 
 your surveys appear on the Surveys tab
@@ -41,3 +45,9 @@ javascript to your survey header
 4. Add some content to your Drupal site using the _Content Type_ you modified 
 in the previous step
 5. Select a survey from the pull down menu and presto!
+
+Installation and Configuration Video: https://youtu.be/t-Fs0XRXee8 
+
+Authoring pages with embedded surveys: https://youtu.be/zI-mC7ZCR_E
+
+How Pages with Surveys Look and Behave Video: https://youtu.be/LZy9bL2TRsI
