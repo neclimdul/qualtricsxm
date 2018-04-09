@@ -1,0 +1,192 @@
+<?php
+
+// @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/qualtricsxm.settings.yml and config/schema/qualtricsxm.schema.yml.
+/**
+ * @file
+ * Main module.
+ */
+  use Drupal\qualtricsxm\qualtricsxm;
+  use Drupal\Core\Cache;
+
+$secure_embed = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_secure_embed')) ? "https://" : "http://";
+// @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/qualtricsxm.settings.yml and config/schema/qualtricsxm.schema.yml.
+// @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/qualtricsxm.settings.yml and config/schema/qualtricsxm.schema.yml.
+$embed_base_url = !empty(\Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter")) ?
+  $secure_embed . trim(\Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter")) . ".qualtrics.com/jfe/form" :
+  $secure_embed . 'survey.qualtrics.com/jfe/form';
+// @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/qualtricsxm.settings.yml and config/schema/qualtricsxm.schema.yml.
+// @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/qualtricsxm.settings.yml and config/schema/qualtricsxm.schema.yml.
+$api_token = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token') : "";
+
+
+define('QUALTRICSXM_BASE_URL', 'https://survey.qualtrics.com/API/v3/');
+define('QUALTRICSXM_EMBED_URL', $embed_base_url);
+define('QUALTRICSXM_API_TOKEN', $api_token);
+
+/**
+ * Implements hook_help().
+ */
+function qualtricsxm_help() {
+
+}
+
+/**
+ * Page callback for loading a survey page.
+ *
+ * @param string $survey_id
+ *   ID of the survey to be loaded.
+ *
+ * @return string
+ *   The page content.
+ */
+function qualtricsxm_survey_page($survey_id) {
+  $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
+  $survey_data = $qualtrics->getSurvey($survey_id);
+
+  if (!$survey_data) {
+    return t('Survey is unavailable.');
+  }
+  $user = \Drupal::currentUser();
+
+  // @FIXME
+// drupal_set_title() has been removed. There are now a few ways to set the title
+// dynamically, depending on the situation.
+// 
+// 
+// @see https://www.drupal.org/node/2067859
+// drupal_set_title($survey_data->result->name);
+
+  // HACK: Passing UID to username.
+  // @FIXME
+// theme() has been renamed to _theme() and should NEVER be called directly.
+// Calling _theme() directly can alter the expected output and potentially
+// introduce security issues (see https://www.drupal.org/node/2195739). You
+// should use renderable arrays instead.
+// 
+// 
+// @see https://www.drupal.org/node/2195739
+// return theme('qualtricsxm_embed_survey', array(
+//     'survey' => array(
+//       'survey_id' => $survey_id,
+//       'username' => $user->uid,
+//       'uid' => $user->uid,
+//     ),
+//     'width' => "100%",
+//     'height' => "900",
+//     'scrolling' => "yes",
+//   ));
+
+}
+
+/**
+ * Help function to get the survey responseCounts.
+ *
+ * @param string $survey_id
+ *   ID of the survey to be loaded.
+ *
+ * @return bool|string
+ *   FALSE|Json
+ */
+function qualtricsxm_count_survey_submissions($survey_id) {
+  // Invoke getResponseData API.
+  $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
+  $response_counts = $qualtrics->getSubmissions($survey_id);
+
+  return $response_counts;
+}
+
+/**
+ * Retrieving the list of surveys from Qualtrics.
+ *
+ * @return array
+ *   List of surveys in array format.
+ */
+function qualtricsxm_get_surveys() {
+  //$surveys = &drupal_static(__FUNCTION__);
+
+//  if (!isset($surveys)) {
+//    if ($cache = \Drupal::cache()->get('qualtrics_surveys_list_cache')) {
+//      $surveys = $cache->data;
+//    }
+//    else {
+      $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
+      $surveys_array = $qualtrics->getSurveyList();
+      if (!empty($surveys_array)) {
+        // Only cache the right data.
+//        \Drupal::cache()->set('qualtrics_surveys_list_cache', $surveys_array, time() + 60 * 60 * 4);
+        $surveys = $surveys_array;
+      }
+//    }
+//  }
+
+  return $surveys;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function qualtricsxm_theme($existing, $type, $theme, $path) {
+  return array(
+    'qualtricsxm_embed_survey' => array(
+      'variables' => array('survey' => NULL, 'width' => NULL, 'height' => NULL),
+    ),
+  );
+}
+
+/**
+ * Theme function to create the HTML code required to embed a Qualtrics survey.
+ *
+ * @param array $vars
+ *   Theme function vars.
+ *
+ * @return string
+ *   The rendered HTML.
+ */
+function theme_qualtricsxm_embed_survey(array $vars) {
+
+  $survey_params = $vars['survey'];
+
+  $width = !empty($vars['width']) ? 'width="' . $vars['width'] . '"' : NULL;
+  $height = !empty($vars['height']) ? 'height="' . $vars['height'] . '"' : NULL;
+  $scrolling = !empty($vars['scrolling']) ? 'scrolling="' . $vars['scrolling'] . '"' : 'scrolling = "no"';
+  $iframe_auto_resize = !empty($vars['enable_iframe_resize']) ? $vars['enable_iframe_resize'] : FALSE;
+
+  if (empty($height) || $iframe_auto_resize) {
+    // Ensure iframe_resize kick in.
+    // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js(drupal_get_path("module", "qualtricsxm") . "/js/iframe_resize.js");
+
+  }
+
+  // @FIXME
+// url() expects a route name or an external URI.
+// $iframe_url = url(QUALTRICSXM_EMBED_URL) . "/" . $survey_params['survey_id'];
+
+
+  $iframe = <<<IFRAME
+<iframe src="$iframe_url" $height $width frameborder="0" $scrolling class="qualtrics_iframe"></iframe>
+IFRAME;
+
+  return $iframe;
+}
