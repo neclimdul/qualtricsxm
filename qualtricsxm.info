@@ -1,9 +1,0 @@
-name = QualtricsXM
-description = Qualtrics eXperience Management.
-package = Qualtricsxm
-configure = admin/config/content/qualtricsxm
-files[] = src/qualtricsxm.php
-api = 3
-
-; Information added by drupal.org packaging script on 2013-10-01
-core = "7.x"
