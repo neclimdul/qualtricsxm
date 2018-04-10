@@ -12,25 +12,9 @@
   use Drupal\Core\Cache;
 
 $secure_embed = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_secure_embed')) ? "https://" : "http://";
-// @FIXME
-// Could not extract the default value because it is either indeterminate, or
-// not scalar. You'll need to provide a default value in
-// config/install/qualtricsxm.settings.yml and config/schema/qualtricsxm.schema.yml.
-// @FIXME
-// Could not extract the default value because it is either indeterminate, or
-// not scalar. You'll need to provide a default value in
-// config/install/qualtricsxm.settings.yml and config/schema/qualtricsxm.schema.yml.
 $embed_base_url = !empty(\Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter")) ?
   $secure_embed . trim(\Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter")) . ".qualtrics.com/jfe/form" :
   $secure_embed . 'survey.qualtrics.com/jfe/form';
-// @FIXME
-// Could not extract the default value because it is either indeterminate, or
-// not scalar. You'll need to provide a default value in
-// config/install/qualtricsxm.settings.yml and config/schema/qualtricsxm.schema.yml.
-// @FIXME
-// Could not extract the default value because it is either indeterminate, or
-// not scalar. You'll need to provide a default value in
-// config/install/qualtricsxm.settings.yml and config/schema/qualtricsxm.schema.yml.
 $api_token = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token') : "";
 
 
@@ -45,97 +29,6 @@ function qualtricsxm_help() {
 
 }
 
-/**
- * Page callback for loading a survey page.
- *
- * @param string $survey_id
- *   ID of the survey to be loaded.
- *
- * @return string
- *   The page content.
- */
-function qualtricsxm_survey_page($survey_id) {
-  $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
-  $survey_data = $qualtrics->getSurvey($survey_id);
-
-  if (!$survey_data) {
-    return t('Survey is unavailable.');
-  }
-  $user = \Drupal::currentUser();
-
-  // @FIXME
-// drupal_set_title() has been removed. There are now a few ways to set the title
-// dynamically, depending on the situation.
-// 
-// 
-// @see https://www.drupal.org/node/2067859
-// drupal_set_title($survey_data->result->name);
-
-  // HACK: Passing UID to username.
-  // @FIXME
-// theme() has been renamed to _theme() and should NEVER be called directly.
-// Calling _theme() directly can alter the expected output and potentially
-// introduce security issues (see https://www.drupal.org/node/2195739). You
-// should use renderable arrays instead.
-// 
-// 
-// @see https://www.drupal.org/node/2195739
-// return theme('qualtricsxm_embed_survey', array(
-//     'survey' => array(
-//       'survey_id' => $survey_id,
-//       'username' => $user->uid,
-//       'uid' => $user->uid,
-//     ),
-//     'width' => "100%",
-//     'height' => "900",
-//     'scrolling' => "yes",
-//   ));
-
-}
-
-/**
- * Help function to get the survey responseCounts.
- *
- * @param string $survey_id
- *   ID of the survey to be loaded.
- *
- * @return bool|string
- *   FALSE|Json
- */
-function qualtricsxm_count_survey_submissions($survey_id) {
-  // Invoke getResponseData API.
-  $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
-  $response_counts = $qualtrics->getSubmissions($survey_id);
-
-  return $response_counts;
-}
-
-/**
- * Retrieving the list of surveys from Qualtrics.
- *
- * @return array
- *   List of surveys in array format.
- */
-function qualtricsxm_get_surveys() {
-  //$surveys = &drupal_static(__FUNCTION__);
-
-//  if (!isset($surveys)) {
-//    if ($cache = \Drupal::cache()->get('qualtrics_surveys_list_cache')) {
-//      $surveys = $cache->data;
-//    }
-//    else {
-      $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
-      $surveys_array = $qualtrics->getSurveyList();
-      if (!empty($surveys_array)) {
-        // Only cache the right data.
-//        \Drupal::cache()->set('qualtrics_surveys_list_cache', $surveys_array, time() + 60 * 60 * 4);
-        $surveys = $surveys_array;
-      }
-//    }
-//  }
-
-  return $surveys;
-}
 
 /**
  * Implements hook_theme().
