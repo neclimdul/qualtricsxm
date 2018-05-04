@@ -82,32 +82,34 @@ function qualtricsxm_embed_field_widget_info() {
 /**
  * Implements hook_field_widget_form().
  */
-function qualtricsxm_embed_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
-  $value = isset($items[$delta]['sid']) ? $items[$delta]['sid'] : '';
-
-  $widget = $element;
-  $widget['#delta'] = $delta;
-  $widget_options = array();
-
-  $surveys = qualtricsxm_get_surveys();
-
-  if (!empty($surveys)) {
-    foreach ($surveys as $survey_id => $survey_info) {
-      $widget_options[$survey_id] = $survey_info['surveyname'];
-    }
-  }
-  switch ($instance['widget']['type']) {
-    case 'field_qualtricsxm_dropdown':
-      $widget += array(
-        '#type' => 'select',
-        '#default_value' => $value,
-        '#options' => $widget_options,
-      );
-      break;
-  }
-
-  $element['sid'] = $widget;
-  return $element;
+function qualtricsxm_embed_field_widget_form_alter(&$element, \Drupal\Core\Form\FormStateInterface $form_state, $context) {
+// var_dump($element);
+// var_dump($context);
+//  $value = isset($items[$delta]['sid']) ? $items[$delta]['sid'] : '';
+//
+//  $widget = $element;
+//  $widget['#delta'] = $delta;
+//  $widget_options = array();
+//
+//  $surveys = qualtricsxm_get_surveys();
+//
+//  if (!empty($surveys)) {
+//    foreach ($surveys as $survey_id => $survey_info) {
+//      $widget_options[$survey_id] = $survey_info['surveyname'];
+//    }
+//  }
+//  switch ($instance['widget']['type']) {
+//    case 'field_qualtricsxm_dropdown':
+//      $widget += array(
+//        '#type' => 'select',
+//        '#default_value' => $value,
+//        '#options' => $widget_options,
+//      );
+//      break;
+//  }
+//
+//  $element['sid'] = $widget;
+//  return $element;
 }
 
 /**

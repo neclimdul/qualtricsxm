@@ -2,8 +2,14 @@ name: 'QualtricsXM Embed Field'
 description: 'An implementation of a field to embed a Qualtrics survey.'
 package: Qualtricsxm
 core: 8.x
+
+libraries:
+  - qualtricsxm_embed/qualtricsxm-libraries
+
 dependencies:
   - qualtricsxm
   - drupal:field
 type: module
 project: qualtricsxm_embed
+
+
