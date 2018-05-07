@@ -28,7 +28,6 @@
     else {
 
       // Just do the Frame Expansion if pixel height is passed
-      // $('#qualtrics-feedback-zone').contents()[0].style.height = e.data;
       $('.qualtrics_iframe').height(e.data);
       $('.qualtrics_iframe').width('100%');
 

@@ -17,7 +17,6 @@ use Drupal\Core\Field\FieldItemListInterface;
  */
 class FieldQualtricsxmIframe extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    //var_dump($items->getSetting('auto'));
     $iframe_auto = $items->getSetting('auto')['qualtricsxm_embed_enable_iframe_auto_resize'];
     $iframe_width  =  !empty($items->getSetting('auto')['qualtricsxm_embed_width']) ?
       $items->getSetting('auto')['qualtricsxm_embed_width']: "100%";
@@ -31,15 +30,11 @@ class FieldQualtricsxmIframe extends FormatterBase {
         $elements['#attached']= [
           'library' => ['qualtricsxm_embed/qualtricsxm-libraries'],
         ];
-        $elements[$delta] = array(
-          '#markup' => t("<iframe src=\"https://au1.qualtrics.com/jfe/form/$item->value\" height=\"\" width=\"\" frameborder=\"0\" scrolling=\"yes\" class=\"qualtrics_iframe\"></iframe>"),
-        );
-      } else {
-        $elements[$delta] = array(
-          '#markup' => t("<iframe src=\"https://au1.qualtrics.com/jfe/form/$item->value\" height=\"$iframe_height\" width=\"$iframe_width\" frameborder=\"0\" scrolling=\"yes\" ></iframe>"),
-        );
-
       }
+        $elements[$delta] = array(
+          '#markup' => t("<iframe src=\"https://au1.qualtrics.com/jfe/form/$item->value\" height=\"$iframe_height\" width=\"$iframe_width\" frameborder=\"0\" 
+            scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>"),
+        );
     }
     return $elements;
   }

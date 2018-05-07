@@ -22,8 +22,12 @@ define('QUALTRICSXM_API_TOKEN', $api_token);
 /**
  * Implements hook_help().
  */
-function qualtricsxm_help() {
-
+function qualtricsxm_help($path, $arg) {
+  switch ($path) {
+    case "help.page.qualtricsxm":
+      return '' . t("The Qualtricsxm module render a Qualtrics form page by Qualtric form ID, it also provides a simple qualtric API dependency functions.") . '';
+      break;
+  }
 }
 
 /**

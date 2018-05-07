@@ -27,8 +27,6 @@ class FieldQualtricsxmDropdown extends WidgetBase {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
 
     $value = isset($items[$delta]->value) ? $items[$delta]->value : NULL;
-    $field_settings = $this->getFieldSettings();
-
 
     $surveys = qualtricsxm_get_surveys();
 
