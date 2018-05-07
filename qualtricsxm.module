@@ -22,8 +22,8 @@ define('QUALTRICSXM_API_TOKEN', $api_token);
 /**
  * Implements hook_help().
  */
-function qualtricsxm_help($path, $arg) {
-  switch ($path) {
+function qualtricsxm_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
+  switch ($route_name) {
     case "help.page.qualtricsxm":
       return '' . t("The Qualtricsxm module render a Qualtrics form page by Qualtric form ID, it also provides a simple qualtric API dependency functions.") . '';
       break;
