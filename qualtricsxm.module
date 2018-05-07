@@ -8,12 +8,12 @@
   use Drupal\Core\Cache;
 
 $secure_embed = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_secure_embed')) ? "https://" : "http://";
+$data_url_path = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_organization_id')) ?
+  \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_organization_id') : \Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter");
 
 $embed_base_url = !empty(\Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter")) ?
-  $secure_embed . trim(\Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter")) . ".qualtrics.com/jfe/form" :
-  $secure_embed . 'survey.qualtrics.com/jfe/form';
+  $secure_embed . trim($data_url_path) . ".qualtrics.com/jfe/form" : $secure_embed . 'survey.qualtrics.com/jfe/form';
 $api_token = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token') : "";
-
 
 define('QUALTRICSXM_BASE_URL', 'https://survey.qualtrics.com/API/v3/');
 define('QUALTRICSXM_EMBED_URL', $embed_base_url);
@@ -73,4 +73,10 @@ function qualtricsxm_get_surveys() {
   return $surveys;
 }
 
+function qualtricsxm_get_survey($survey_id) {
+  $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
+  $survey = $qualtrics->getSurvey($survey_id);
+
+  return $survey;
+}
 

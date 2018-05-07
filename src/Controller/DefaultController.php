@@ -22,13 +22,31 @@ class DefaultController extends ControllerBase {
       return t('Survey is unavailable.');
     }
     //$user = \Drupal::currentUser();
-
-    //Todo compile the url.
+    $embed_url = QUALTRICSXM_EMBED_URL . "/$survey_id";
+    $qualtricsxm_embed_width = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width') : "100%";
+    $qualtricsxm_embed_height = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height') : "900";
     return [
-      '#markup' => $this->t("<iframe src=\"https://au1.qualtrics.com/jfe/form/$survey_id\" height=\"900\" width=\"100%\" frameborder=\"0\" scrolling=\"yes\" class=\"qualtrics_iframe\"></iframe>"),
+      '#markup' => $this->t("<iframe src=\"$embed_url\" height=\"$qualtricsxm_embed_height\" width=\"$qualtricsxm_embed_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>"),
     ];
   }
 
+  /**
+   * Set page title.
+   * Comment it out if no needs for title.
+   * @param string $survey_id
+   * @return mixed
+   *  string|null
+   */
+  public function getTitle($survey_id) {
+    $survey = qualtricsxm_get_survey($survey_id);
+    $title = !empty($survey->name) ? $survey->name : NULL;
+    return $title;
+  }
+
+  /**
+   * Get surveys list by survey token.
+   * @return array|string
+   */
   public function qualtricsxm_surveys_list() {
 
     $surveys = qualtricsxm_get_surveys();

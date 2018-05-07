@@ -2,6 +2,7 @@ qualtricsxm.survey_page:
   path: '/qualtricsxm/survey/{survey_id}'
   defaults:
     _controller: '\Drupal\qualtricsxm\Controller\DefaultController::qualtricsxm_survey_page'
+    _title_callback: '\Drupal\qualtricsxm\Controller\DefaultController::getTitle'
   requirements:
     _permission: 'access qualtricsxm survey'
 qualtricsxm.config_settings:

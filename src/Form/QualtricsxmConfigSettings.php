@@ -77,6 +77,20 @@ class QualtricsxmConfigSettings extends ConfigFormBase {
       '#description' => t('Whether to use https:// for embedding a survey or not.'),
     ];
 
+    $form['qualtricsxm_embed_width'] = [
+      '#type' => 'textfield',
+      '#title' => t('Embed width'),
+      '#default_value' => \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width'),
+      '#description' => t('Custom Qualtrics embed form width'),
+    ];
+
+    $form['qualtricsxm_embed_height'] = [
+      '#type' => 'textfield',
+      '#title' => t('Embed height'),
+      '#default_value' => \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height'),
+      '#description' => t('Custom Qualtrics embed form height'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 

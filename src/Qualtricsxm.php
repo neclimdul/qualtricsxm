@@ -68,7 +68,7 @@ class Qualtricsxm {
     }
 
     $survey_data = json_decode($survey);
-    return $survey_data;
+    return $survey_data->result;
   }
 
   /**
