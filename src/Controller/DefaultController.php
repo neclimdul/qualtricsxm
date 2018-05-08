@@ -19,7 +19,7 @@ class DefaultController extends ControllerBase {
     $survey_data = $qualtrics->getSurvey($survey_id);
 
     if (!$survey_data) {
-      return t('Survey is unavailable.');
+      return $this->t('Survey is unavailable.');
     }
     //$user = \Drupal::currentUser();
     $embed_url = QUALTRICSXM_EMBED_URL . "/$survey_id";
@@ -68,17 +68,17 @@ class DefaultController extends ControllerBase {
           $survey['auditable'] = empty($submissions->auditable) ? NULL : $submissions->auditable;
           $survey['generated'] = empty($submissions->generated) ? NULL : $submissions->generated;
           $survey['deleted'] = empty($submissions->deleted) ? NULL : $submissions->deleted;
-          $survey['id'] = t("<a href=/qualtricsxm/survey/$id>" . $id . "</a>");
+          $survey['id'] = $this->t("<a href=/qualtricsxm/survey/$id>" . $id . "</a>");
           $row[] = $survey;
         }
         $table = [
           '#theme' => 'table',
           '#header' => [
-            t('Name'),
-            t('Survey ID'),
-            t('User ID'),
-            t('Last Updated'),
-            t('is Active'),
+            $this->t('Name'),
+            $this->t('Survey ID'),
+            $this->t('User ID'),
+            $this->t('Last Updated'),
+            $this->t('is Active'),
             t('Auditable'),
             t('Generated'),
             t('Deleted'),

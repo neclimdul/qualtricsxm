@@ -10,8 +10,16 @@ namespace Drupal\qualtricsxm\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Config\ConfigFactoryInterface;
 
 class QualtricsxmConfigSettings extends ConfigFormBase {
+
+  protected $configfactory;
+
+  public function __construct(ConfigFactoryInterface $config_factory) {
+    parent::__construct($config_factory);
+    $this->configfactory = $config_factory;
+  }
 
   /**
    * {@inheritdoc}
@@ -49,50 +57,51 @@ class QualtricsxmConfigSettings extends ConfigFormBase {
 
     $form['qualtricsxm_api_token'] = [
       '#type' => 'textfield',
-      '#title' => t('API token'),
+      '#title' => $this->t('API token'),
       '#required' => TRUE,
-      '#default_value' => \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token'),
-      '#description' => t('Your API token. qualtricsxm_embed module requires API token.'),
+      //'#default_value' => \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token'),
+      '#default_value' => $this->configfactory->get('qualtricsxm.settings')->get('qualtricsxm_api_token'),
+      '#description' => $this->t('Your API token. qualtricsxm_embed module requires API token.'),
     ];
 
     $form['qualtricsxm_datacenter'] = [
       '#type' => 'textfield',
-      '#title' => t('Datacenter ID'),
+      '#title' => $this->t('Datacenter ID'),
       '#required' => TRUE,
-      '#default_value' => \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_datacenter'),
-      '#description' => t('Your datacenter ID, e.g. au2.') . " <a href='https://api.qualtrics.com/docs/root-url' target='_blank'>" . "Find your DataCenter</a>",
+      '#default_value' => $this->configfactory->get('qualtricsxm.settings')->get('qualtricsxm_datacenter'),
+      '#description' => $this->t('Your datacenter ID, e.g. au2.') . " <a href='https://api.qualtrics.com/docs/root-url' target='_blank'>" . "Find your DataCenter</a>",
     ];
 
     $form['qualtricsxm_organization_id'] = [
       '#type' => 'textfield',
-      '#title' => t('Organization ID'),
-      '#default_value' => \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_organization_id'),
-      '#description' => t('Your datacenter.') . " <a href='https://api.qualtrics.com/docs/finding-qualtrics-ids' target='_blank'>" . "Find your Organization ID</a>",
+      '#title' => $this->t('Organization ID'),
+      '#default_value' => $this->configfactory->get('qualtricsxm.settings')->get('qualtricsxm_organization_id'),
+      '#description' => $this->t('Your datacenter.') . " <a href='https://api.qualtrics.com/docs/finding-qualtrics-ids' target='_blank'>" . "Find your Organization ID</a>",
     ];
 
     $form['qualtricsxm_secure_embed'] = [
       '#type' => 'checkbox',
-      '#title' => t('Secure embedding'),
-      '#default_value' => \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_secure_embed'),
-      '#description' => t('Whether to use https:// for embedding a survey or not.'),
+      '#title' => $this->t('Secure embedding'),
+      '#default_value' => $this->configfactory->get('qualtricsxm.settings')->get('qualtricsxm_secure_embed'),
+      '#description' => $this->t('Whether to use https:// for embedding a survey or not.'),
     ];
 
     $form['qualtricsxm_embed_width'] = [
       '#type' => 'textfield',
-      '#title' => t('Embed width'),
-      '#default_value' => \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width'),
-      '#description' => t('Custom Qualtrics embed form width'),
+      '#title' => $this->t('Embed width'),
+      '#default_value' => $this->configfactory->get('qualtricsxm.settings')->get('qualtricsxm_embed_width'),
+      '#description' => $this->t('Custom Qualtrics embed form width'),
     ];
 
     $form['qualtricsxm_embed_height'] = [
       '#type' => 'textfield',
-      '#title' => t('Embed height'),
-      '#default_value' => \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height'),
-      '#description' => t('Custom Qualtrics embed form height'),
+      '#title' => $this->t('Embed height'),
+      '#default_value' => $this->configfactory->get('qualtricsxm.settings')->get('qualtricsxm_embed_height'),
+      '#description' => $this->t('Custom Qualtrics embed form height'),
     ];
 
     return parent::buildForm($form, $form_state);
   }
 
 }
-?>
+
