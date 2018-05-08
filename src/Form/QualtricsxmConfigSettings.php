@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\qualtricsxm\Form\QualtricsxmConfigSettings.
- */
-
 namespace Drupal\qualtricsxm\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
@@ -16,6 +11,9 @@ class QualtricsxmConfigSettings extends ConfigFormBase {
 
   protected $configfactory;
 
+  /**
+   * {@inheritdoc}
+   */
   public function __construct(ConfigFactoryInterface $config_factory) {
     parent::__construct($config_factory);
     $this->configfactory = $config_factory;
@@ -59,7 +57,6 @@ class QualtricsxmConfigSettings extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('API token'),
       '#required' => TRUE,
-      //'#default_value' => \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token'),
       '#default_value' => $this->configfactory->get('qualtricsxm.settings')->get('qualtricsxm_api_token'),
       '#description' => $this->t('Your API token. qualtricsxm_embed module requires API token.'),
     ];
@@ -104,4 +101,3 @@ class QualtricsxmConfigSettings extends ConfigFormBase {
   }
 
 }
-

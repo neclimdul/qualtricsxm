@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\qualtricsxm;
 
 /**
@@ -27,10 +28,10 @@ class Qualtricsxm {
    *   Requested data.
    */
   public function httpRequest(array $url_params) {
-    $options = array(
+    $options = [
       'timeout' => 15,
-      'headers' => array('X-API-TOKEN' => $this->api_token),
-    );
+      'headers' => ['X-API-TOKEN' => $this->api_token],
+    ];
 
     $api_req = "/";
     foreach ($url_params as $url => $val) {
@@ -45,7 +46,7 @@ class Qualtricsxm {
     $code = $response->getStatusCode();
 
     if ($code == '200') {
-      return  $response->getBody()->getContents();
+      return $response->getBody()->getContents();
     } else {
       return FALSE;
     }
@@ -61,7 +62,7 @@ class Qualtricsxm {
    *   FALSE or json data.
    */
   public function getSurvey($survey_id) {
-    $survey = $this->httpRequest(array("surveys" => $survey_id));
+    $survey = $this->httpRequest(["surveys" => $survey_id]);
 
     if (!$survey) {
       return "Qualtrics is not connected";
@@ -78,7 +79,7 @@ class Qualtricsxm {
    *   TODO merge into getSurve.
    */
   public function getSurveyList() {
-    $survey = $this->httpRequest(array('surveys' => ''));
+    $survey = $this->httpRequest(['surveys' => '']);
     if (!$survey) {
       return "Qualtrics is not connected";
     }

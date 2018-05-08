@@ -1,7 +1,4 @@
-<?php /**
- * @file
- * Contains \Drupal\qualtricsxm\Controller\DefaultController.
- */
+<?php
 
 namespace Drupal\qualtricsxm\Controller;
 
@@ -79,9 +76,9 @@ class DefaultController extends ControllerBase {
             $this->t('User ID'),
             $this->t('Last Updated'),
             $this->t('is Active'),
-            t('Auditable'),
-            t('Generated'),
-            t('Deleted'),
+            $this->t('Auditable'),
+            $this->t('Generated'),
+            $this->t('Deleted'),
           ],
           '#rows' => $row,
         ];
@@ -94,3 +91,4 @@ class DefaultController extends ControllerBase {
   }
 
 }
+
