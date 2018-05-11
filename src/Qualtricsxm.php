@@ -113,7 +113,8 @@ class Qualtricsxm {
     if (!$request_data) {
       return FALSE;
     }
-    $response_counts = empty($request_data->result->responseCounts) ? NULL : $request_data->result->responseCounts;
+    $response_counts = !empty($request_data->responseCounts) ? $request_data->responseCounts : NULL;
+
     return $response_counts;
   }
 

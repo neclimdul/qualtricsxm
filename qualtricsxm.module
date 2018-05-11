@@ -7,18 +7,6 @@
   use Drupal\qualtricsxm\qualtricsxm;
   use Drupal\Core\Cache;
 
-$secure_embed = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_secure_embed')) ? "https://" : "http://";
-$data_url_path = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_organization_id')) ?
-  \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_organization_id') : \Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter");
-
-$embed_base_url = !empty(\Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter")) ?
-  $secure_embed . trim($data_url_path) . ".qualtrics.com/jfe/form" : $secure_embed . 'survey.qualtrics.com/jfe/form';
-$api_token = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token') : "";
-
-define('QUALTRICSXM_BASE_URL', 'https://survey.qualtrics.com/API/v3/');
-define('QUALTRICSXM_EMBED_URL', $embed_base_url);
-define('QUALTRICSXM_API_TOKEN', $api_token);
-
 /**
  * Implements hook_help().
  */
@@ -28,6 +16,46 @@ function qualtricsxm_help($route_name, \Drupal\Core\Routing\RouteMatchInterface 
       return '' . t("The Qualtricsxm module render a Qualtrics form page by Qualtric form ID, it also provides a simple qualtric API dependency functions.") . '';
       break;
   }
+}
+
+/**
+ * Create a qualtricsxm class can be accessible.
+ */
+function qualtricsxm_static () {
+  $api_token = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token') : "";
+  $api_url = "https://survey.qualtrics.com/API/v3/";
+  static $drupal_static_fast;
+
+  if (!isset($drupal_static_fast)) {
+    $drupal_static_fast['qulatricsxm'] = &drupal_static(__FUNCTION__);
+  }
+  $qulatricsxm = &$drupal_static_fast['qulatricsxm'];
+
+  if (!isset($qulatricsxm)) {
+    $qulatricsxm = new Qualtricsxm($api_url, $api_token);
+  }
+
+  return $qulatricsxm;
+}
+
+function get_config_width_height () {
+  $qualtricsxm_embed_width = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width') : "100%";
+  $qualtricsxm_embed_height = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height') : "900";
+
+  return ['width'=>$qualtricsxm_embed_width, 'height' => $qualtricsxm_embed_height];
+}
+
+/**
+ * helper function get accessible base url.
+ */
+function get_base_url() {
+  $secure_embed = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_secure_embed')) ? "https://" : "http://";
+  $data_url_path = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_organization_id')) ?
+    \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_organization_id') : \Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter");
+
+  $embed_base_url = !empty(\Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter")) ?
+    $secure_embed . trim($data_url_path) . ".qualtrics.com/jfe/form" : $secure_embed . 'survey.qualtrics.com/jfe/form';
+  return $embed_base_url;
 }
 
 /**
@@ -41,7 +69,7 @@ function qualtricsxm_help($route_name, \Drupal\Core\Routing\RouteMatchInterface 
  */
 function qualtricsxm_count_survey_submissions($survey_id) {
   // Invoke getResponseData API.
-  $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
+  $qualtrics = qualtricsxm_static();
   $response_counts = $qualtrics->getSubmissions($survey_id);
 
   return $response_counts;
@@ -61,7 +89,7 @@ function qualtricsxm_get_surveys() {
       $surveys = $cache->data;
     }
     else {
-      $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
+      $qualtrics = qualtricsxm_static();
       $surveys_array = $qualtrics->getSurveyList();
       if (!empty($surveys_array)) {
          //Only cache the right data.
@@ -73,10 +101,61 @@ function qualtricsxm_get_surveys() {
   return $surveys;
 }
 
+/**
+ * Helper function get survey by Qualtrics Survey ID.
+ */
 function qualtricsxm_get_survey($survey_id) {
-  $qualtrics = new Qualtricsxm(QUALTRICSXM_BASE_URL, QUALTRICSXM_API_TOKEN);
+  $qualtrics = qualtricsxm_static();
   $survey = $qualtrics->getSurvey($survey_id);
 
   return $survey;
 }
 
+/**
+ * Helper function get surveys list table.
+ */
+function qualtricsxm_get_survey_list_table() {
+
+  $surveys = qualtricsxm_get_surveys();
+
+  if (!$surveys) {
+    return "Qualtrics not connected.";
+  }
+
+  $table = &drupal_static(__FUNCTION__);
+
+  if (!isset($table)) {
+    if ($cache = \Drupal::cache()->get('admin_table_cache')) {
+      $table = $cache->data;
+    }
+    else {
+      foreach ($surveys as $survey) {
+        $id = $survey['id'];
+        $submissions = qualtricsxm_count_survey_submissions($id);
+        $survey['auditable'] = empty($submissions->auditable) ? NULL : $submissions->auditable;
+        $survey['generated'] = empty($submissions->generated) ? NULL : $submissions->generated;
+        $survey['deleted'] = empty($submissions->deleted) ? NULL : $submissions->deleted;
+        $survey['id'] = t("<a href=/qualtricsxm/survey/$id>" . $id . "</a>");
+        $row[] = $survey;
+      }
+      $table = [
+        '#theme' => 'table',
+        '#header' => [
+          t('Name'),
+          t('Survey ID'),
+          t('User ID'),
+          t('Last Updated'),
+          t('is Active'),
+          t('Auditable'),
+          t('Generated'),
+          t('Deleted'),
+        ],
+        '#rows' => $row,
+      ];
+      // 4hours.
+      \Drupal::cache()->set('admin_table_cache', $table, time() + 60 * 60 * 4);
+    }
+  }
+
+  return $table;
+}
