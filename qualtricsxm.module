@@ -16,9 +16,8 @@ function qualtricsxm_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
 
     case "help.page.qualtricsxm":
-      return t("The Qualtricsxm module render a Qualtrics form page by Qualtric form ID, it also provides a simple qualtric API dependency functions.");
-      break;
-
+      $output =  t("The Qualtricsxm module render a Qualtrics form page by Qualtric form ID, it also provides a simple qualtric API dependency functions.");
+      return $output;
   }
 }
 
@@ -44,7 +43,7 @@ function qualtricsxm_static() {
 }
 
 /**
- * helper function get conf settings of width and height.
+ * Helper function get conf settings of width and height.
  */
 function qualtricsxm_get_config_width_height () {
   $qualtricsxm_embed_width = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width') : "100%";
@@ -55,7 +54,7 @@ function qualtricsxm_get_config_width_height () {
 }
 
 /**
- * helper function get accessible base url.
+ * Helper function get accessible base url.
  */
 function qualtricsxm_get_base_url() {
   $secure_embed = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_secure_embed')) ? "https://" : "http://";

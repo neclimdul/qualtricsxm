@@ -16,6 +16,7 @@ use Drupal\qualtricsxm\qualtricsxm;
  * Plugin implementation of Qualtrics list widget.
  */
 class FieldQualtricsxmDropdown extends WidgetBase {
+
   /**
    * {@inheritdoc}
    */

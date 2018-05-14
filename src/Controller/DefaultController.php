@@ -14,7 +14,7 @@ use Drupal\Core\Controller\ControllerBase;
  */
 class DefaultController extends ControllerBase {
 
-  public function qualtricsxmSurveyPage ($survey_id) {
+  public function qualtricsxmSurveyPage($survey_id) {
     $qualtrics = qualtricsxm_static();
     $survey_data = $qualtrics->getSurvey($survey_id);
 
@@ -36,7 +36,7 @@ class DefaultController extends ControllerBase {
    * @param string $survey_id
    *   ID of the survey to be loaded.
    *
-   * @return mixed string|null
+   * @return string|null
    *   Page title.
    */
   public function getTitle($survey_id) {

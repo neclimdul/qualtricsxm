@@ -50,7 +50,7 @@ class Qualtricsxm {
     }
     else {
       return FALSE;
-      }
+    }
   }
 
   /**
