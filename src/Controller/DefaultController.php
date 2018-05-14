@@ -14,6 +14,12 @@ use Drupal\Core\Controller\ControllerBase;
  */
 class DefaultController extends ControllerBase {
 
+  /**
+   * Helper function to generate renderable HTML markup.
+   *
+   * @param $survey_id Qualtrics survey ID.
+   * @return array Redenable markup.
+   */
   public function qualtricsxmSurveyPage($survey_id) {
     $qualtrics = qualtricsxm_static();
     $survey_data = $qualtrics->getSurvey($survey_id);

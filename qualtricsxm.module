@@ -16,7 +16,7 @@ function qualtricsxm_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
 
     case "help.page.qualtricsxm":
-      $output =  t("The Qualtricsxm module render a Qualtrics form page by Qualtric form ID, it also provides a simple qualtric API dependency functions.");
+      $output = t("The Qualtricsxm module render a Qualtrics form page by Qualtric form ID, it also provides a simple qualtric API dependency functions.");
       return $output;
   }
 }
@@ -45,7 +45,7 @@ function qualtricsxm_static() {
 /**
  * Helper function get conf settings of width and height.
  */
-function qualtricsxm_get_config_width_height () {
+function qualtricsxm_get_config_width_height() {
   $qualtricsxm_embed_width = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width') : "100%";
   $qualtricsxm_embed_height = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height') : "900";
 
@@ -100,7 +100,7 @@ function qualtricsxm_get_surveys() {
       $qualtrics = qualtricsxm_static();
       $surveys_array = $qualtrics->getSurveyList();
       if (!empty($surveys_array)) {
-         // Only cache the right data.
+        // Only cache the right data.
         \Drupal::cache()->set('qualtrics_surveys_list_cache', $surveys_array, time() + 60 * 60 * 4);
         $surveys = $surveys_array;
       }

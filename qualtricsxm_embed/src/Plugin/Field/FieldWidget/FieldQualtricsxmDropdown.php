@@ -5,7 +5,6 @@ namespace Drupal\qualtricsxm_embed\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\qualtricsxm\qualtricsxm;
 
 /**
  * @file
