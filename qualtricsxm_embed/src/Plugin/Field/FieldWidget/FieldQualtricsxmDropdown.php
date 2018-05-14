@@ -1,7 +1,4 @@
-<?php /**
- * @file
- * Contains \Drupal\qualtricsxm_embed\Plugin\Field\FieldWidget\FieldQualtricsxmDropdown.
- */
+<?php
 
 namespace Drupal\qualtricsxm_embed\Plugin\Field\FieldWidget;
 
@@ -14,13 +11,12 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Drupal\qualtricsxm\qualtricsxm;
 
 /**
- * @FieldWidget(
- *  id = "field_qualtricsxm_dropdown",
- *  label = @Translation("QualtricsXM Survey Dropdown"),
- *  field_types = {"field_qualtricsxm_survey"},
- *  default_formatter = "field_qualtricsxm_iframe"
- *
- * )
+ * @file
+ * Contains \Drupal\qualtricsxm_embed\Plugin\Field\FieldWidget\FieldQualtricsxmDropdown.
+ */
+
+/**
+ * {@inheritdoc}
  */
 class FieldQualtricsxmDropdown extends WidgetBase {
 
@@ -36,14 +32,14 @@ class FieldQualtricsxmDropdown extends WidgetBase {
       }
     }
     // Build the element render array.
-    $element += array(
+    $element += [
       '#type' => 'select',
       '#default_value' => $value,
       '#options' => $widget_options,
       '#empty_option' => '--',
-    );
+    ];
 
-    return array('value' => $element);
+    return ['value' => $element];
 
   }
 

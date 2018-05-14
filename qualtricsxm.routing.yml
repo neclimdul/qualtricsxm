@@ -1,7 +1,7 @@
 qualtricsxm.survey_page:
   path: '/qualtricsxm/survey/{survey_id}'
   defaults:
-    _controller: '\Drupal\qualtricsxm\Controller\DefaultController::qualtricsxm_survey_page'
+    _controller: '\Drupal\qualtricsxm\Controller\DefaultController::qualtricsxmSurveyPage'
     _title_callback: '\Drupal\qualtricsxm\Controller\DefaultController::getTitle'
   requirements:
     _permission: 'access qualtricsxm survey'
@@ -16,6 +16,6 @@ qualtricsxm.surveys_list:
   path: /admin/config/content/qualtricsxm/surveys
   defaults:
     _title: Surveys
-    _controller: '\Drupal\qualtricsxm\Controller\DefaultController::qualtricsxm_surveys_list'
+    _controller: '\Drupal\qualtricsxm\Controller\DefaultController::qualtricsxmSurveysList'
   requirements:
     _permission: 'administer qualtricsxm settings'

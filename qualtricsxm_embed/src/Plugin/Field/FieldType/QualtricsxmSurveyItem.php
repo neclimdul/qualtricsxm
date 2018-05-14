@@ -58,14 +58,16 @@ class QualtricsxmSurveyItem extends FieldItemBase {
    * {@inheritdoc}
    */
   public static function defaultFieldSettings() {
-    return array(
+    return [
       'auto' => [
         'qualtricsxm_embed_enable_iframe_auto_resize' => 1,
       ],
-     'custom'=> [
-       'qualtricsxm_embed_width' => "",
-       'qualtricsxm_embed_height' => "",
-     ],) + parent::defaultFieldSettings();
+       'custom'=> [
+         'qualtricsxm_embed_width' => "",
+         'qualtricsxm_embed_height' => "",
+       ],
+    ] + parent::defaultFieldSettings();
+
   }
 
   /**
@@ -75,21 +77,21 @@ class QualtricsxmSurveyItem extends FieldItemBase {
 
     $form = ['#element_validate' => [[$this, 'fieldSettingsFormValidate']]];
 
-    $form['auto'] = array(
+    $form['auto'] = [
       '#type' => 'details',
-      '#open'=> TRUE,
+      '#open' => TRUE,
       '#title' => t('Auto resize iframe'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
-    );
-    $form['auto']['qualtricsxm_embed_enable_iframe_auto_resize'] = array(
+    ];
+    $form['auto']['qualtricsxm_embed_enable_iframe_auto_resize'] = [
       '#type' => 'checkbox',
       '#title' => t('Iframe auto resize'),
       '#default_value' => $this->getSetting('auto')['qualtricsxm_embed_enable_iframe_auto_resize'],
       '#description' => t("To ensure the auto-resize iframe working, please copy the following code into Qualtrics form header. Untick this if custom iframe Width and Height have been given."),
-    );
+    ];
 
-    $form['auto']['qualtricsxm_embed_cross_region_js'] = array(
+    $form['auto']['qualtricsxm_embed_cross_region_js'] = [
       '#type' => 'textarea',
 
       '#default_value' => '<script> /*Use the "script" opening and closing tags only if you are placing this script in the header of your survey(to run on all pages)*/
@@ -109,29 +111,29 @@ class QualtricsxmSurveyItem extends FieldItemBase {
 
 </script>',
 
-    );
+    ];
 
-    $form['custom'] = array(
+    $form['custom'] = [
       '#type' => 'details',
-      '#open'=> TRUE,
+      '#open' => TRUE,
       '#title' => t('Custom'),
       '#collapsible' => TRUE,
       '#collapsed' => FALSE,
-    );
-    $form['custom']['qualtricsxm_embed_width'] = array(
+    ];
+    $form['custom']['qualtricsxm_embed_width'] = [
       '#type' => 'textfield',
       '#title' => t('Survey iframe width'),
       '#default_value' => $this->getSetting('custom')['qualtricsxm_embed_width'],
       '#element_validate' => ['element_validate_integer_positive'],
       '#description' => t('The width for the iframe. Leave it empty if Auto Resize Iframe has been enabled.'),
-    );
-    $form['custom']['qualtricsxm_embed_height'] = array(
+    ];
+    $form['custom']['qualtricsxm_embed_height'] = [
       '#type' => 'textfield',
       '#title' => t('Survey iframe height'),
       '#default_value' => $this->getSetting('custom')['qualtricsxm_embed_height'],
-      '#element_validate' => array('element_validate_integer_positive'),
+      '#element_validate' => ['element_validate_integer_positive'],
       '#description' => t('The height for the iframe. Leave it empty if Auto Resize Iframe has been enabled.'),
-    );
+    ];
     return $form;
   }
 
@@ -142,12 +144,13 @@ class QualtricsxmSurveyItem extends FieldItemBase {
     $iframe_auto = !empty($form['auto']['qualtricsxm_embed_enable_iframe_auto_resize']['#value']) ? TURE : FALSE ;
     $iframe_width = $form['custom']['qualtricsxm_embed_width']['#value'];
     $iframe_height = $form['custom']['qualtricsxm_embed_height']['#value'];
-    $iframe_custom = !empty($iframe_width) || !empty($iframe_height) ? TRUE : FALSE;
+    $iframe_custom = !empty($iframe_width) || !empty($iframe_height) ? TRUE : FALSE ;
 
     if ($iframe_auto && $iframe_custom) {
-      //setError on checkbox seems broken checkbox, disable this for now.
+      // setError on checkbox seems broken checkbox, disable this for now.
       $form_state->setError($form['custom']['qualtricsxm_embed_width'], t("Leave it empty if Auto Resize Iframe has been enabled."));
       $form_state->setError($form['custom']['qualtricsxm_embed_height'], t("Leave it empty if Auto Resize Iframe has been enabled."));
     }
   }
+
 }

@@ -47,8 +47,9 @@ class Qualtricsxm {
 
     if ($code == '200') {
       return $response->getBody()->getContents();
-    } else {
-      return FALSE;
+    }
+      else {
+        return FALSE;
     }
   }
 

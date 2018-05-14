@@ -7,7 +7,6 @@ libraries:
   - qualtricsxm_embed/qualtricsxm-libraries
 
 dependencies:
-  - qualtricsxm
+  - drupal:qualtricsxm
   - drupal:field
 type: module
-project: qualtricsxm_embed

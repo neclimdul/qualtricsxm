@@ -7,6 +7,16 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Config\ConfigFactoryInterface;
 
+/**
+ * @file
+ * Contains \Drupal\qualtricsxm\Form\QualtricsxmConfigSettings.
+ */
+
+/**
+ * Class QualtricsxmConfigSettings
+ *
+ * @package Drupal\qualtricsxm\Form
+ */
 class QualtricsxmConfigSettings extends ConfigFormBase {
 
   protected $configfactory;
@@ -51,7 +61,10 @@ class QualtricsxmConfigSettings extends ConfigFormBase {
     return ['qualtricsxm.settings'];
   }
 
-  public function buildForm(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state) {
 
     $form['qualtricsxm_api_token'] = [
       '#type' => 'textfield',

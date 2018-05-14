@@ -38,7 +38,7 @@ function qualtricsxm_static () {
   return $qulatricsxm;
 }
 
-function get_config_width_height () {
+function qualtricsxm_get_config_width_height () {
   $qualtricsxm_embed_width = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width') : "100%";
   $qualtricsxm_embed_height = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height') : "900";
 
@@ -48,7 +48,7 @@ function get_config_width_height () {
 /**
  * helper function get accessible base url.
  */
-function get_base_url() {
+function qualtricsxm_get_base_url() {
   $secure_embed = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_secure_embed')) ? "https://" : "http://";
   $data_url_path = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_organization_id')) ?
     \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_organization_id') : \Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter");
