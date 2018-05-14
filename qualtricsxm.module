@@ -4,24 +4,28 @@
  * @file
  * Main module.
  */
-  use Drupal\qualtricsxm\qualtricsxm;
-  use Drupal\Core\Cache;
+
+use Drupal\qualtricsxm\qualtricsxm;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Cache;
 
 /**
  * Implements hook_help().
  */
-function qualtricsxm_help($route_name, \Drupal\Core\Routing\RouteMatchInterface $route_match) {
+function qualtricsxm_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
+
     case "help.page.qualtricsxm":
-      return '' . t("The Qualtricsxm module render a Qualtrics form page by Qualtric form ID, it also provides a simple qualtric API dependency functions.") . '';
+      return t("The Qualtricsxm module render a Qualtrics form page by Qualtric form ID, it also provides a simple qualtric API dependency functions.");
       break;
+
   }
 }
 
 /**
  * Create a qualtricsxm class can be accessible.
  */
-function qualtricsxm_static () {
+function qualtricsxm_static() {
   $api_token = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token') : "";
   $api_url = "https://survey.qualtrics.com/API/v3/";
   static $drupal_static_fast;
@@ -36,13 +40,18 @@ function qualtricsxm_static () {
   }
 
   return $qulatricsxm;
+
 }
 
+/**
+ * helper function get conf settings of width and height.
+ */
 function qualtricsxm_get_config_width_height () {
   $qualtricsxm_embed_width = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width') : "100%";
   $qualtricsxm_embed_height = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height') : "900";
 
-  return ['width'=>$qualtricsxm_embed_width, 'height' => $qualtricsxm_embed_height];
+  return ['width' => $qualtricsxm_embed_width, 'height' => $qualtricsxm_embed_height];
+
 }
 
 /**
@@ -92,7 +101,7 @@ function qualtricsxm_get_surveys() {
       $qualtrics = qualtricsxm_static();
       $surveys_array = $qualtrics->getSurveyList();
       if (!empty($surveys_array)) {
-         //Only cache the right data.
+         // Only cache the right data.
         \Drupal::cache()->set('qualtrics_surveys_list_cache', $surveys_array, time() + 60 * 60 * 4);
         $surveys = $surveys_array;
       }
@@ -135,7 +144,7 @@ function qualtricsxm_get_survey_list_table() {
         $survey['auditable'] = empty($submissions->auditable) ? NULL : $submissions->auditable;
         $survey['generated'] = empty($submissions->generated) ? NULL : $submissions->generated;
         $survey['deleted'] = empty($submissions->deleted) ? NULL : $submissions->deleted;
-        $survey['id'] = t("<a href=/qualtricsxm/survey/$id>" . $id . "</a>");
+        $survey['id'] = "<a href=/qualtricsxm/survey/$id>" . $id . "</a>";
         $row[] = $survey;
       }
       $table = [

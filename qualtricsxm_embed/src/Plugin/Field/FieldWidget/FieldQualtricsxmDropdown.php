@@ -3,11 +3,8 @@
 namespace Drupal\qualtricsxm_embed\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\WidgetBase;
-use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Url;
 use Drupal\Core\Form\FormStateInterface;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Drupal\qualtricsxm\qualtricsxm;
 
 /**
@@ -16,10 +13,12 @@ use Drupal\qualtricsxm\qualtricsxm;
  */
 
 /**
- * {@inheritdoc}
+ * Plugin implementation of Qualtrics list widget.
  */
 class FieldQualtricsxmDropdown extends WidgetBase {
-
+  /**
+   * {@inheritdoc}
+   */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
 
     $value = isset($items[$delta]->value) ? $items[$delta]->value : NULL;

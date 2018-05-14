@@ -13,7 +13,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
  */
 
 /**
- * Class QualtricsxmConfigSettings
+ * Class QualtricsxmConfigSettings.
  *
  * @package Drupal\qualtricsxm\Form
  */

@@ -8,16 +8,7 @@ use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Plugin implementation of the 'field_example_rgb' field type.
- *
- * @FieldType(
- *   id = "field_qualtricsxm_survey",
- *   label = @Translation("Field Qualtricsxm Survey"),
- *   module = "qualtricsxm_embed",
- *   description = @Translation("Render Qualtrics Survey iframe."),
- *   default_widget = "field_qualtricsxm_dropdown",
- *   default_formatter = "field_qualtricsxm_iframe",
- * )
+ * Plugin implementation of the 'Qualtricsxm Survey' field type.
  */
 class QualtricsxmSurveyItem extends FieldItemBase {
 
@@ -62,10 +53,10 @@ class QualtricsxmSurveyItem extends FieldItemBase {
       'auto' => [
         'qualtricsxm_embed_enable_iframe_auto_resize' => 1,
       ],
-       'custom'=> [
-         'qualtricsxm_embed_width' => "",
-         'qualtricsxm_embed_height' => "",
-       ],
+      'custom' => [
+        'qualtricsxm_embed_width' => "",
+        'qualtricsxm_embed_height' => "",
+      ],
     ] + parent::defaultFieldSettings();
 
   }
@@ -138,13 +129,13 @@ class QualtricsxmSurveyItem extends FieldItemBase {
   }
 
   /**
-   * Not really validation, ensue only parse the right field setting to formatter.
+   * Not really validation, ensue parse the right field setting to formatter.
    */
   public function fieldSettingsFormValidate(array $form, FormStateInterface $form_state) {
-    $iframe_auto = !empty($form['auto']['qualtricsxm_embed_enable_iframe_auto_resize']['#value']) ? TURE : FALSE ;
+    $iframe_auto = !empty($form['auto']['qualtricsxm_embed_enable_iframe_auto_resize']['#value']) ? TRUE : FALSE;
     $iframe_width = $form['custom']['qualtricsxm_embed_width']['#value'];
     $iframe_height = $form['custom']['qualtricsxm_embed_height']['#value'];
-    $iframe_custom = !empty($iframe_width) || !empty($iframe_height) ? TRUE : FALSE ;
+    $iframe_custom = !empty($iframe_width) || !empty($iframe_height) ? TRUE : FALSE;
 
     if ($iframe_auto && $iframe_custom) {
       // setError on checkbox seems broken checkbox, disable this for now.

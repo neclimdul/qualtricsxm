@@ -26,20 +26,20 @@ class DefaultController extends ControllerBase {
     $qualtricsxm_embed_width = qualtricsxm_get_config_width_height()['width'];
     $qualtricsxm_embed_height = qualtricsxm_get_config_width_height()['height'];
     return [
-      '#markup' => $this->t("<iframe src=\"$embed_url\" height=\"$qualtricsxm_embed_height\" width=\"$qualtricsxm_embed_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>"),
+      '#markup' => "<iframe src=\"$embed_url\" height=\"$qualtricsxm_embed_height\" width=\"$qualtricsxm_embed_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>",
     ];
   }
 
   /**
-   * Set page title.
-   * Comment it out if no needs for title.
+   * Set page title. Comment it out if no needs for title.
    *
    * @param string $survey_id
+   *   ID of the survey to be loaded.
    *
-   * @return mixed
-   *    string|null
+   * @return mixed string|null
+   *   Page title.
    */
-  public function getTitle ($survey_id) {
+  public function getTitle($survey_id) {
     $survey = qualtricsxm_get_survey($survey_id);
     $title = !empty($survey->name) ? $survey->name : NULL;
     return $title;
@@ -49,6 +49,7 @@ class DefaultController extends ControllerBase {
    * Get surveys list by survey token.
    *
    * @return array|string
+   *   Survey lists.
    */
   public function qualtricsxmSurveysList() {
     return qualtricsxm_get_survey_list_table();
