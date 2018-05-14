@@ -17,7 +17,8 @@ class DefaultController extends ControllerBase {
   /**
    * Helper function to generate renderable HTML markup.
    *
-   * @param $survey_id Qualtrics survey ID.
+   * @param string $survey_id Qualtrics survey ID.
+   *
    * @return array Redenable markup.
    */
   public function qualtricsxmSurveyPage($survey_id) {
