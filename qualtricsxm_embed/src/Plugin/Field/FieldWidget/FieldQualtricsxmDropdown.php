@@ -12,6 +12,8 @@ use Drupal\Core\Form\FormStateInterface;
  */
 
 /**
+ *  Plugin implementation of the 'field_qualtricsxm_dropdown' widget.
+ *
  * @FieldWidget(
  *  id = "field_qualtricsxm_dropdown",
  *  label = @Translation("QualtricsXM Survey Dropdown"),

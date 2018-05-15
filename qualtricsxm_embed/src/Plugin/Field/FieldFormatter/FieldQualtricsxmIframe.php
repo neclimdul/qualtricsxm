@@ -39,7 +39,7 @@ class FieldQualtricsxmIframe extends FormatterBase {
         ];
       }
       $elements[$delta] = [
-        '#markup' => t("<iframe src=\"https://au1.qualtrics.com/jfe/form/$item->value\" height=\"$iframe_height\" width=\"$iframe_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>"),
+        '#markup' => $this->t("<iframe src=\"https://au1.qualtrics.com/jfe/form/$item->value\" height=\"$iframe_height\" width=\"$iframe_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>"),
       ];
     }
     return $elements;
