@@ -80,8 +80,7 @@ function qualtricsxm_count_survey_submissions($survey_id) {
   $qualtrics = qualtricsxm_static();
   $response_counts = $qualtrics->getSubmissions($survey_id);
 
-  $ra['auditable'] = $response_counts->auditable;
-  return $ra;
+  return $response_counts;
 }
 
 /**
@@ -141,7 +140,7 @@ function qualtricsxm_get_survey_list_table() {
     else {
       foreach ($surveys as $survey) {
         $id = $survey['id'];
-        //$submissions = qualtricsxm_count_survey_submissions($id);
+//        $submissions = qualtricsxm_count_survey_submissions($id);
 //        $survey['auditable'] = empty($submissions->auditable) ? NULL : $submissions->auditable;
 //        $survey['generated'] = empty($submissions->generated) ? NULL : $submissions->generated;
 //        $survey['deleted'] = empty($submissions->deleted) ? NULL : $submissions->deleted;
@@ -156,9 +155,9 @@ function qualtricsxm_get_survey_list_table() {
           t('User ID'),
           t('Last Updated'),
           t('is Active'),
-          t('Auditable'),
-          t('Generated'),
-          t('Deleted'),
+//          t('Auditable'),
+//          t('Generated'),
+//          t('Deleted'),
         ],
         '#rows' => $row,
       ];
@@ -166,5 +165,6 @@ function qualtricsxm_get_survey_list_table() {
       \Drupal::cache()->set('admin_table_cache', $table, time() + 60 * 60 * 4);
     }
   }
+
   return $table;
 }
