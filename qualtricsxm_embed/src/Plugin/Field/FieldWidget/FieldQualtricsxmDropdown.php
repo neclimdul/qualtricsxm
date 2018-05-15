@@ -12,7 +12,13 @@ use Drupal\Core\Form\FormStateInterface;
  */
 
 /**
- * Plugin implementation of Qualtrics list widget.
+ * @FieldWidget(
+ *  id = "field_qualtricsxm_dropdown",
+ *  label = @Translation("QualtricsXM Survey Dropdown"),
+ *  field_types = {"field_qualtricsxm_survey"},
+ *  default_formatter = "field_qualtricsxm_iframe"
+ *
+ * )
  */
 class FieldQualtricsxmDropdown extends WidgetBase {
 

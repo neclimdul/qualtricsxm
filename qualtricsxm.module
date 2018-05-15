@@ -80,7 +80,8 @@ function qualtricsxm_count_survey_submissions($survey_id) {
   $qualtrics = qualtricsxm_static();
   $response_counts = $qualtrics->getSubmissions($survey_id);
 
-  return $response_counts;
+  $ra['auditable'] = $response_counts->auditable;
+  return $ra;
 }
 
 /**
@@ -99,6 +100,7 @@ function qualtricsxm_get_surveys() {
     else {
       $qualtrics = qualtricsxm_static();
       $surveys_array = $qualtrics->getSurveyList();
+
       if (!empty($surveys_array)) {
         // Only cache the right data.
         \Drupal::cache()->set('qualtrics_surveys_list_cache', $surveys_array, time() + 60 * 60 * 4);
@@ -139,11 +141,11 @@ function qualtricsxm_get_survey_list_table() {
     else {
       foreach ($surveys as $survey) {
         $id = $survey['id'];
-        $submissions = qualtricsxm_count_survey_submissions($id);
-        $survey['auditable'] = empty($submissions->auditable) ? NULL : $submissions->auditable;
-        $survey['generated'] = empty($submissions->generated) ? NULL : $submissions->generated;
-        $survey['deleted'] = empty($submissions->deleted) ? NULL : $submissions->deleted;
-        $survey['id'] = "<a href=/qualtricsxm/survey/$id>" . $id . "</a>";
+        //$submissions = qualtricsxm_count_survey_submissions($id);
+//        $survey['auditable'] = empty($submissions->auditable) ? NULL : $submissions->auditable;
+//        $survey['generated'] = empty($submissions->generated) ? NULL : $submissions->generated;
+//        $survey['deleted'] = empty($submissions->deleted) ? NULL : $submissions->deleted;
+        $survey['id'] = t("<a href=/qualtricsxm/survey/$id>" . $id . "</a>");
         $row[] = $survey;
       }
       $table = [
@@ -164,6 +166,5 @@ function qualtricsxm_get_survey_list_table() {
       \Drupal::cache()->set('admin_table_cache', $table, time() + 60 * 60 * 4);
     }
   }
-
   return $table;
 }

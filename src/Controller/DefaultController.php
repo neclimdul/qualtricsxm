@@ -3,6 +3,7 @@
 namespace Drupal\qualtricsxm\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\qualtricsxm\Qualtricsxm;
 
 /**
  * @file
@@ -30,10 +31,11 @@ class DefaultController extends ControllerBase {
     }
 
     $embed_url = qualtricsxm_get_base_url() . "/$survey_id";
+
     $qualtricsxm_embed_width = qualtricsxm_get_config_width_height()['width'];
     $qualtricsxm_embed_height = qualtricsxm_get_config_width_height()['height'];
     return [
-      '#markup' => "<iframe src=\"$embed_url\" height=\"$qualtricsxm_embed_height\" width=\"$qualtricsxm_embed_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>",
+      '#markup' => t("<iframe src=\"$embed_url\" height=\"$qualtricsxm_embed_height\" width=\"$qualtricsxm_embed_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>"),
     ];
   }
 

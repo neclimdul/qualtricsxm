@@ -8,7 +8,16 @@ use Drupal\Core\TypedData\DataDefinition;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Plugin implementation of the 'Qualtricsxm Survey' field type.
+ * Plugin implementation of the 'field_qualtricsxm_survey' field type.
+ *
+ * @FieldType(
+ *   id = "field_qualtricsxm_survey",
+ *   label = @Translation("Field Qualtricsxm Survey"),
+ *   module = "qualtricsxm_embed",
+ *   description = @Translation("Render Qualtrics Survey iframe."),
+ *   default_widget = "field_qualtricsxm_dropdown",
+ *   default_formatter = "field_qualtricsxm_iframe",
+ * )
  */
 class QualtricsxmSurveyItem extends FieldItemBase {
 
