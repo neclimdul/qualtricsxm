@@ -11,6 +11,8 @@ use Drupal\Core\Field\FieldItemListInterface;
  */
 
 /**
+ * Plugin implementation of the 'field_qualtricsxm_iframe' formatter.
+ *
  * @FieldFormatter(
  *  id = "field_qualtricsxm_iframe",
  *  label = @Translation("QualtricsXM iframe-embedding"),
@@ -39,7 +41,7 @@ class FieldQualtricsxmIframe extends FormatterBase {
         ];
       }
       $elements[$delta] = [
-        '#markup' => $this->t("<iframe src=\"https://au1.qualtrics.com/jfe/form/$item->value\" height=\"$iframe_height\" width=\"$iframe_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>"),
+        '#markup' => $this->t("" . "<iframe src=\"https://au1.qualtrics.com/jfe/form/$item->value\" height=\"$iframe_height\" width=\"$iframe_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>"),
       ];
     }
     return $elements;

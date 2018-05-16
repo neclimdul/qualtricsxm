@@ -19,10 +19,10 @@ class DefaultController extends ControllerBase {
    * Helper function to generate renderable HTML markup.
    *
    * @param string $survey_id
-   *    Qualtrics survey ID.
+   *   Qualtrics survey ID.
    *
    * @return array
-   *    Redenable markup.
+   *   Redenable markup.
    */
   public function qualtricsxmSurveyPage($survey_id) {
     $qualtrics = qualtricsxm_static();
@@ -37,7 +37,7 @@ class DefaultController extends ControllerBase {
     $qualtricsxm_embed_width = qualtricsxm_get_config_width_height()['width'];
     $qualtricsxm_embed_height = qualtricsxm_get_config_width_height()['height'];
     return [
-      '#markup' => $this->t("<iframe src=\"$embed_url\" height=\"$qualtricsxm_embed_height\" width=\"$qualtricsxm_embed_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>"),
+      '#markup' => $this->t("" . "<iframe src=\"$embed_url\" height=\"$qualtricsxm_embed_height\" width=\"$qualtricsxm_embed_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>"),
     ];
   }
 
