@@ -103,6 +103,15 @@ function qualtricsxm_get_surveys() {
       if (!empty($surveys_array)) {
         // Only cache the right data.
         \Drupal::cache()->set('qualtrics_surveys_list_cache', $surveys_array, time() + 60 * 60 * 4);
+
+        foreach ($surveys_array as $key => $survey) {
+          $id = $survey['id'];
+          $submissions = $qualtrics->getSubmissions($id);
+          $surveys_array[$key]['id'] = t("<a href=/qualtricsxm/survey/$id>" . $id . "</a>");
+          $surveys_array[$key]['auditable'] = empty($submissions->auditable) ? NULL : $submissions->auditable;
+          $surveys_array[$key]['generated'] = empty($submissions->generated) ? NULL : $submissions->generated;
+          $surveys_array[$key]['deleted'] = empty($submissions->deleted) ? NULL : $submissions->deleted;
+        }
         $surveys = $surveys_array;
       }
     }
@@ -138,15 +147,6 @@ function qualtricsxm_get_survey_list_table() {
       $table = $cache->data;
     }
     else {
-      foreach ($surveys as $survey) {
-        $id = $survey['id'];
-//        $submissions = qualtricsxm_count_survey_submissions($id);
-//        $survey['auditable'] = empty($submissions->auditable) ? NULL : $submissions->auditable;
-//        $survey['generated'] = empty($submissions->generated) ? NULL : $submissions->generated;
-//        $survey['deleted'] = empty($submissions->deleted) ? NULL : $submissions->deleted;
-        $survey['id'] = t("<a href=/qualtricsxm/survey/$id>" . $id . "</a>");
-        $row[] = $survey;
-      }
       $table = [
         '#theme' => 'table',
         '#header' => [
@@ -155,11 +155,11 @@ function qualtricsxm_get_survey_list_table() {
           t('User ID'),
           t('Last Updated'),
           t('is Active'),
-//          t('Auditable'),
-//          t('Generated'),
-//          t('Deleted'),
+          t('Auditable'),
+          t('Generated'),
+          t('Deleted'),
         ],
-        '#rows' => $row,
+        '#rows' => $surveys,
       ];
       // 4hours.
       \Drupal::cache()->set('admin_table_cache', $table, time() + 60 * 60 * 4);
