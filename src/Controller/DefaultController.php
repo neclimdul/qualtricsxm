@@ -3,7 +3,6 @@
 namespace Drupal\qualtricsxm\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\qualtricsxm\Qualtricsxm;
 
 /**
  * @file
@@ -14,6 +13,13 @@ use Drupal\qualtricsxm\Qualtricsxm;
  * Default controller for the qualtricsxm module.
  */
 class DefaultController extends ControllerBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getModuleName() {
+    return 'qualtricsxm';
+  }
 
   /**
    * Helper function to generate renderable HTML markup.
