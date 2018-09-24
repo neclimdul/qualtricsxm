@@ -14,8 +14,6 @@
   // Listen to message from survey
   eventer(messageEvent, function (e) {
 
-    console.log('QUALTRICS: Received message!:  ', e.data);
-
     if (e.data === 'closeQSIWindow') {
 
       setTimeout(function () {

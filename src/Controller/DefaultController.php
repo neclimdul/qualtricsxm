@@ -43,7 +43,7 @@ class DefaultController extends ControllerBase {
     $qualtricsxm_embed_width = qualtricsxm_get_config_width_height()['width'];
     $qualtricsxm_embed_height = qualtricsxm_get_config_width_height()['height'];
     return [
-      '#markup' => $this->t("" . "<iframe src=\"$embed_url\" height=\"$qualtricsxm_embed_height\" width=\"$qualtricsxm_embed_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>"),
+      '#markup' => "<iframe src=\"$embed_url\" height=\"$qualtricsxm_embed_height\" width=\"$qualtricsxm_embed_width\" frameborder=\"0\" scrolling=\"no\" class=\"qualtrics_iframe\"></iframe>",
     ];
   }
 
