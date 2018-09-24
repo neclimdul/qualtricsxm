@@ -107,7 +107,7 @@ function qualtricsxm_get_surveys() {
         foreach ($surveys_array as $key => $survey) {
           $id = $survey['id'];
           $submissions = $qualtrics->getSubmissions($id);
-          $surveys_array[$key]['id'] = t('Check the survey, click on @link', array("@link" => "<a href=/qualtricsxm/survey/$id>" . $id . "</a>"));
+          $surveys_array[$key]['id'] = t('Check the survey, click on @link', ["@link" => "<a href=/qualtricsxm/survey/$id>" . $id . "</a>"]);
           $surveys_array[$key]['auditable'] = empty($submissions->auditable) ? NULL : $submissions->auditable;
           $surveys_array[$key]['generated'] = empty($submissions->generated) ? NULL : $submissions->generated;
           $surveys_array[$key]['deleted'] = empty($submissions->deleted) ? NULL : $submissions->deleted;
