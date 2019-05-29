@@ -5,9 +5,8 @@
  * Main module.
  */
 
-use Drupal\qualtricsxm\qualtricsxm;
+use Drupal\qualtricsxm\Qualtricsxm;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Cache;
 
 /**
  * Implements hook_help().
