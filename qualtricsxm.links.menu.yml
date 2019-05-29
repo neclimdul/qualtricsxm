@@ -1,5 +1,3 @@
-qualtricsxm.survey_page:
-  route_name: qualtricsxm.survey_page
 qualtricsxm.config_settings:
   route_name: qualtricsxm.config_settings
   title: 'QualtricsXM settings'
