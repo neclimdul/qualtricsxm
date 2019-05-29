@@ -80,7 +80,7 @@ function qualtricsxm_count_survey_submissions($survey_id) {
  *   List of surveys in array format.
  */
 function qualtricsxm_get_surveys() {
-  $surveys = &drupal_static(__FUNCTION__);
+  $surveys = &drupal_static(__FUNCTION__, FALSE);
 
   if (!isset($surveys)) {
     if ($cache = \Drupal::cache()->get('qualtrics_surveys_list_cache')) {
@@ -128,34 +128,29 @@ function qualtricsxm_get_survey_list_table() {
   $surveys = qualtricsxm_get_surveys();
 
   if (!$surveys) {
-    return "Qualtrics not connected.";
+    return [
+      '#markup' => 'Qualtrics not connected.',
+    ];
   }
 
-  $table = &drupal_static(__FUNCTION__, []);
-
-  if (!isset($table)) {
-    if ($cache = \Drupal::cache()->get('admin_table_cache')) {
-      $table = $cache->data;
-    }
-    else {
-      $table = [
-        '#theme' => 'table',
-        '#header' => [
-          t('Name'),
-          t('Survey ID'),
-          t('User ID'),
-          t('Last Updated'),
-          t('is Active'),
-          t('Auditable'),
-          t('Generated'),
-          t('Deleted'),
-        ],
-        '#rows' => $surveys,
-      ];
-      // 4hours.
-      \Drupal::cache()->set('admin_table_cache', $table, time() + 60 * 60 * 4);
-    }
-  }
+  $table = [
+    '#theme' => 'table',
+    '#header' => [
+      t('Name'),
+      t('Survey ID'),
+      t('User ID'),
+      t('Last Updated'),
+      t('is Active'),
+      t('Auditable'),
+      t('Generated'),
+      t('Deleted'),
+    ],
+    '#rows' => $surveys,
+    '#cache' => [
+      // 4 Hours.
+      'max-age' => 60 * 60 * 4,
+    ],
+  ];
 
   return $table;
 }
