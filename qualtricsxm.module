@@ -22,23 +22,11 @@ function qualtricsxm_help($route_name, RouteMatchInterface $route_match) {
 
 /**
  * Create a qualtricsxm class can be accessible.
+ *
+ * @return \Drupal\qualtricsxm\Qualtricsxm
  */
 function qualtricsxm_static() {
-  $api_token = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_api_token') : "";
-  $api_url = "https://survey.qualtrics.com/API/v3/";
-  static $drupal_static_fast;
-
-  if (!isset($drupal_static_fast)) {
-    $drupal_static_fast['qulatricsxm'] = &drupal_static(__FUNCTION__);
-  }
-  $qulatricsxm = &$drupal_static_fast['qulatricsxm'];
-
-  if (!isset($qulatricsxm)) {
-    $qulatricsxm = new Qualtricsxm($api_url, $api_token);
-  }
-
-  return $qulatricsxm;
-
+  return \Drupal::service('qualtricsxm.qualtricsxm');
 }
 
 /**

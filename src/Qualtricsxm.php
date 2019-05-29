@@ -2,6 +2,7 @@
 
 namespace Drupal\qualtricsxm;
 
+use Drupal\Core\Config\ConfigFactory;
 use GuzzleHttp\Exception\GuzzleException;
 
 /**
@@ -15,9 +16,10 @@ class Qualtricsxm {
   /**
    * Qualtricsxm constructor.
    */
-  public function __construct($apqc_base_url, $api_token) {
+  public function __construct($apqc_base_url, ConfigFactory $configFactory) {
+    $api_token = $configFactory->get('qualtricsxm.settings')->get('qualtricsxm_api_token');
     $this->apiBaseUrl = $apqc_base_url;
-    $this->apiToken = $api_token;
+    $this->apiToken = $api_token ? $api_token : '';
   }
 
   /**
