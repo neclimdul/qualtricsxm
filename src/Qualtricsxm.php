@@ -13,9 +13,9 @@ class Qualtricsxm {
   /**
    * Qualtricsxm constructor.
    */
-  public function __construct($apiBaseUrl, $apiToken) {
-    $this->api_base_url = $apiBaseUrl;
-    $this->api_token = $apiToken;
+  public function __construct($apqc_base_url, $api_token) {
+    $this->apiBaseUrl = $apqc_base_url;
+    $this->apiToken = $api_token;
   }
 
   /**
@@ -30,7 +30,7 @@ class Qualtricsxm {
   public function httpRequest(array $url_params) {
     $options = [
       'timeout' => 15,
-      'headers' => ['X-API-TOKEN' => $this->api_token],
+      'headers' => ['X-API-TOKEN' => $this->apiToken],
     ];
 
     $api_req = "/";
@@ -38,7 +38,7 @@ class Qualtricsxm {
       $api_req .= urlencode($url) . "/" . urlencode($val);
     }
 
-    $url = $this->api_base_url . $api_req;
+    $url = $this->apiBaseUrl . $api_req;
 
     $client = \Drupal::httpClient();
 
