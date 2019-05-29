@@ -139,7 +139,7 @@ function qualtricsxm_get_survey_list_table() {
     return "Qualtrics not connected.";
   }
 
-  $table = &drupal_static(__FUNCTION__);
+  $table = &drupal_static(__FUNCTION__, []);
 
   if (!isset($table)) {
     if ($cache = \Drupal::cache()->get('admin_table_cache')) {

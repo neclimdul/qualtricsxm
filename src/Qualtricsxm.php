@@ -2,6 +2,8 @@
 
 namespace Drupal\qualtricsxm;
 
+use GuzzleHttp\Exception\GuzzleException;
+
 /**
  * Helper class for Qualtrics API Call.
  */
@@ -42,8 +44,14 @@ class Qualtricsxm {
 
     $client = \Drupal::httpClient();
 
-    $response = $client->request('GET', $url, $options);
-    $code = $response->getStatusCode();
+    try {
+      $response = $client->request('GET', $url, $options);
+    }
+    catch (GuzzleException $e) {
+      return FALSE;
+    }
+
+    $code= $response->getStatusCode();
 
     if ($code == '200') {
       return $response->getBody()->getContents();
