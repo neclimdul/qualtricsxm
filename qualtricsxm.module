@@ -5,7 +5,6 @@
  * Main module.
  */
 
-use Drupal\qualtricsxm\Qualtricsxm;
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
@@ -33,10 +32,14 @@ function qualtricsxm_static() {
  * Helper function get conf settings of width and height.
  */
 function qualtricsxm_get_config_width_height() {
-  $qualtricsxm_embed_width = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_width') : "100%";
-  $qualtricsxm_embed_height = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height')) ? \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_embed_height') : "900";
+  $settings = \Drupal::config('qualtricsxm.settings');
+  $qualtricsxm_embed_width = $settings->get('qualtricsxm_embed_width');
+  $qualtricsxm_embed_height = $settings->get('qualtricsxm_embed_height');
 
-  return ['width' => $qualtricsxm_embed_width, 'height' => $qualtricsxm_embed_height];
+  return [
+    'width' => $qualtricsxm_embed_width ? $qualtricsxm_embed_width : '100%',
+    'height' => $qualtricsxm_embed_height ? $qualtricsxm_embed_height : '900',
+  ];
 
 }
 
@@ -44,13 +47,13 @@ function qualtricsxm_get_config_width_height() {
  * Helper function get accessible base url.
  */
 function qualtricsxm_get_base_url() {
-  $secure_embed = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_secure_embed')) ? "https://" : "http://";
-  $data_url_path = !empty(\Drupal::config('qualtricsxm.settings')->get('qualtricsxm_organization_id')) ?
-    \Drupal::config('qualtricsxm.settings')->get('qualtricsxm_organization_id') : \Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter");
+  $settings = \Drupal::config('qualtricsxm.settings');
+  $secure_embed = $settings->get('qualtricsxm_secure_embed') ? "https://" : "http://";
+  $org_id = $settings->get('qualtricsxm_organization_id');
+  $datacenter = $settings->get("qualtricsxm_datacenter");
+  $data_url_path = $org_id ? $org_id : $datacenter;
 
-  $embed_base_url = !empty(\Drupal::config('qualtricsxm.settings')->get("qualtricsxm_datacenter")) ?
-    $secure_embed . trim($data_url_path) . ".qualtrics.com/jfe/form" : $secure_embed . 'survey.qualtrics.com/jfe/form';
-  return $embed_base_url;
+  return $secure_embed . ($datacenter ? trim($data_url_path) . ".qualtrics.com/jfe/form" : 'survey.qualtrics.com/jfe/form');
 }
 
 /**
@@ -89,7 +92,8 @@ function qualtricsxm_get_surveys() {
 
       if (!empty($surveys_array)) {
         // Only cache the right data.
-        \Drupal::cache()->set('qualtrics_surveys_list_cache', $surveys_array, time() + 60 * 60 * 4);
+        \Drupal::cache()
+          ->set('qualtrics_surveys_list_cache', $surveys_array, time() + 60 * 60 * 4);
 
         foreach ($surveys_array as $key => $survey) {
           $id = $survey['id'];
